@@ -1,6 +1,7 @@
 package com.revature.erm.dtos.requests;
 
 import com.revature.erm.models.User;
+import com.revature.erm.models.UserRole;
 
 public class NewUserRequest {
 
@@ -9,20 +10,20 @@ public class NewUserRequest {
     private String email;
     private String username;
     private String password;
-    private String role_id;
-    //private Role role
+    private UserRole role;
+
 
     public NewUserRequest() {
         super();
     }
 
-    public NewUserRequest(String firstName, String lastName, String email, String username, String password, String role_id) {
+    public NewUserRequest(String firstName, String lastName, String email, String username, String password, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.username = username;
         this.password = password;
-        this.role_id = role_id;
+        this.role = new UserRole(role);
     }
 
     public String getFirstName() {
@@ -65,16 +66,16 @@ public class NewUserRequest {
         this.password = password;
     }
 
-    public String getRole_id() {
-        return role_id;
+    public UserRole getRole() {
+        return role;
     }
 
-    public void setRole_id(String role_id) {
-        this.role_id = role_id;
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
     public User extractUser() {
-        return new User(firstName, lastName, email, username, password, role_id);
+        return new User(firstName, lastName, email, username, password, role);
     }
 
     @Override

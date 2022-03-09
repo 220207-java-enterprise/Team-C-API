@@ -24,4 +24,16 @@ public class UserRole {
         this.id = id;
         this.rolename = rolename;
     }
+
+    public UserRole(String id) {
+        this.id = id;
+        switch (id){
+            case "0": this.rolename = "Admin";
+            break;
+            case "1": this.rolename = "Finance Manager";
+            break;
+            case "2": this.rolename = "Employee";
+            break;
+        }
+    }
 }

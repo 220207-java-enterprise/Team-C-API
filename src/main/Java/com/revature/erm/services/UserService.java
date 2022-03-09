@@ -3,6 +3,7 @@ package com.revature.erm.services;
 import com.revature.erm.daos.UserDAO;
 import com.revature.erm.dtos.requests.LoginRequest;
 import com.revature.erm.dtos.requests.NewUserRequest;
+import com.revature.erm.dtos.requests.UpdateUserRequest;
 import com.revature.erm.dtos.responses.UserResponse;
 import com.revature.erm.models.User;
 import com.revature.erm.models.UserRole;
@@ -81,6 +82,13 @@ public class UserService {
 
     }
 
+    public User updatedUser(UpdateUserRequest updateUserRequest) {
+        User updatedUser = updateUserRequest.extractUser();
+        userDAO.update(updatedUser);
+        return updatedUser;
+
+    }
+
     private boolean isUserValid(User appUser) {
 
         // First name and last name are not just empty strings or filled with whitespace
@@ -129,4 +137,6 @@ public class UserService {
     public boolean isEmailAvailable(String email) {
         return userDAO.findUserByEmail(email) == null;
     }
+
+
 }
