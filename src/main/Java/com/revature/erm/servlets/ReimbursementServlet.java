@@ -47,23 +47,15 @@ public class ReimbursementServlet extends HttpServlet {
 
             HttpSession session = req.getSession(false);
             if (session == null) {
-                System.out.println("doGet :  ReimbursementServlet session==null throws 401 error");
                 resp.setStatus(401);
                 return;
             } else {
-                System.out.println("doGet :   session!=null, doesn't throw exception");
-                System.out.println(session.getAttribute("authUser"));
                 String sessionUserId = parseSessionUserId(session);//pull id from the session so the authorId can match
 
-                System.out.println("print statement on line 59");
                 ListUserReimbursementsRequest listUserReimbursementsRequest = mapper.readValue(req.getInputStream(), ListUserReimbursementsRequest.class);
-                System.out.println("created ListUserReimbursementRequest");
                 listUserReimbursementsRequest.setAuthorId(sessionUserId);
-                System.out.println("set listreimbursementsrequest author_id to sessionUserId");
 
                 List<Reimbursement> reimbs = reimbursementService.getReimbursementByAuthorId(listUserReimbursementsRequest);
-                //todo ^^this variable might need to be reimbursementresponse instead of reimbursement
-                System.out.println("ran getReimbursementByAUthorId() successfully");
                 String payload = mapper.writeValueAsString(reimbs);
                 resp.setContentType("application/json");
                 respWriter.write(payload);
@@ -89,20 +81,15 @@ public class ReimbursementServlet extends HttpServlet {
 
             HttpSession session = req.getSession(false);
             if (session == null) {
-                System.out.println("doPost :  ReimbursementServlet session==null throws 401 error");
                 resp.setStatus(401);
                 return;
             } else {
-                System.out.println("doPost :  session!=null, doesn't throw exception");
-                System.out.println(session.getAttribute("authUser"));
                 String sessionUserId = parseSessionUserId(session);//pull id from the session so the authorId can match
 
 
                 NewReimbursementRequest newReimbursementRequest = mapper.readValue(req.getInputStream(), NewReimbursementRequest.class);
-                System.out.println("about to launch submitNewReimbursement in ReimbursementServlet.java");
 
                 newReimbursementRequest.setAuthorId(sessionUserId); //set authorId being pulled from the session
-                System.out.println("setAuthorId(sessionUserId) in reimbursementServlet has been called");
                 Reimbursement newReimbursement = reimbursementService.submitNewReimbursment(newReimbursementRequest);
                 resp.setStatus(201); // CREATED
                 resp.setContentType("application/json");
@@ -130,18 +117,13 @@ public class ReimbursementServlet extends HttpServlet {
 
             HttpSession session = req.getSession(false);
             if (session == null) {
-                System.out.println("doPost :  ReimbursementServlet session==null throws 401 error");
                 resp.setStatus(401);
                 return;
             } else {
-                System.out.println("doPost :  session!=null, doesn't throw exception");
-                System.out.println(session.getAttribute("authUser"));
                 String sessionUserId = parseSessionUserId(session);//pull id from the session so the authorId can match
 
                 UpdateReimbursementRequest updateReimbursementRequest = mapper.readValue(req.getInputStream(), UpdateReimbursementRequest.class);
-                System.out.println("data passed to updateReimbursementRequest");
                 Reimbursement updateThisReimbursement = reimbursementService.changeReimbursementStatus(updateReimbursementRequest);
-                System.out.println("changeReimbursementStatus has run successfully");
 
                 String payload = mapper.writeValueAsString(updateThisReimbursement);
                 resp.setContentType("application/json");
@@ -176,8 +158,6 @@ public class ReimbursementServlet extends HttpServlet {
     public String parseSessionUserId(HttpSession session){
 
         Principal parseThis = (Principal) session.getAttribute("authUser");
-        System.out.println("printing authUser attribute as a string: " + parseThis);
-        System.out.println("printing principal's id: " + parseThis.getId());
 
         return parseThis.getId();
     }

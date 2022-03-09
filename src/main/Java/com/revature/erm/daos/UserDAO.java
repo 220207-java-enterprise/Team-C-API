@@ -93,24 +93,14 @@ public class UserDAO implements CrudDAO<User> {
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 authUser = new User();
-                System.out.println("is it here?");
                 authUser.setId(rs.getString("user_id"));
-                System.out.println("or here?");
                 authUser.setUsername(rs.getString("username"));
-                System.out.println("username");
                 authUser.setEmail(rs.getString("email"));
-                System.out.println("email");
                 authUser.setPassword(rs.getString("password"));
-                System.out.println("password");
                 authUser.setFirstName(rs.getString("first_name"));
-                System.out.println("firstname");
                 authUser.setLastName(rs.getString("last_name"));
-                System.out.println("lastname");
                 authUser.setIsActive(rs.getBoolean("is_active"));
-                System.out.println("is_active");
-                System.out.println("rs.getstring() returns: " + rs.getString("role"));
                 authUser.setRole(rs.getString("role_id"));//new UserRole(rs.getString("role_id"), rs.getString("role")));
-                System.out.println("it all works");
             }
 
         } catch (SQLException e) {

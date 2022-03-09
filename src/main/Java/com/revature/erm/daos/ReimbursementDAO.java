@@ -32,17 +32,13 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement> {
             pstmt.setString(5, newReimbursement.getDescription());
             pstmt.setString(6, newReimbursement.getPayment_id());
             pstmt.setString(7, newReimbursement.getAuthor_id());//.getId());
-            //if(newReimbursement.getResolver() != null)
                 pstmt.setString(8, newReimbursement.getResolver_id());//.getId());
-            //else
-                //pstmt.setString(8, null);
             pstmt.setString(9, newReimbursement.getStatus_id());//getStatus().getId());
             pstmt.setString(10, newReimbursement.getType_id());//getType().getId());
 
-            System.out.println(pstmt);
+            System.out.println(pstmt);//do we need this??
 
             int rowsInserted = pstmt.executeUpdate();
-            System.out.println("pstmt.executeUpdate() ran in ReimbursementDao.java?");
             if (rowsInserted != 1) {
                 conn.rollback();
                 throw new ResourcePersistenceException("Failed to persist reimbursement to data source");
@@ -80,8 +76,6 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement> {
                 matchingReimbursement.setAuthor_id(rs.getString("author_id"));
                 //todo figure out how to pull the ers_users table, ers_user_roles, and ers_reimbursments table in a single select statement
                 //matchingReimbursement.setAuthor(new User(rs.getString("author_id"), rs.getString("SELECT username FROM ers_users WHERE user_id = author_id")));
-
-                System.out.println("updated reimbursement found after update was made");
                 return matchingReimbursement;
             }
 
@@ -143,7 +137,6 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement> {
             pstmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
             pstmt.setString(3, updateThisReimbursement.getId());
 
-            System.out.println("UPDATE command sent to database");
             /*pstmt.setString(1, newReimbursement.getId());
             pstmt.setInt(2, newReimbursement.getAmount());
             pstmt.setTimestamp(3, newReimbursement.getSubmitted());
@@ -161,7 +154,6 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement> {
             System.out.println(pstmt);*/
 
             int rowsInserted = pstmt.executeUpdate();
-            System.out.println("pstmt.executeUpdate() ran in ReimbursementDao.java?");
             if (rowsInserted != 1) {
                 conn.rollback();
                 throw new ResourcePersistenceException("Failed to persist reimbursement to data source");
@@ -172,7 +164,6 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement> {
         } catch (SQLException e) {
             throw new DataSourceException(e);
         }
-        //return temp;
     }
 
     public void deleteById(String id) {

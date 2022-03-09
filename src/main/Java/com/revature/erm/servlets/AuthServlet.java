@@ -49,7 +49,6 @@ public class AuthServlet extends HttpServlet {
             // Stateful session management
             HttpSession httpSession = req.getSession();
             httpSession.setAttribute("authUser", principal);
-            System.out.println("printing principal from httpSession attribute 'authUser': " + httpSession.getAttribute("authUser"));
             resp.setContentType("application/json");
             writer.write(payload);
 

@@ -26,14 +26,6 @@ public class UserService {
 
     public List<UserResponse> getAllUsers() {
 
-        // Pre-Java 8 mapping logic (without Streams)
-//        List<AppUser> users = userDAO.getAll();
-//        List<AppUserResponse> userResponses = new ArrayList<>();
-//        for (AppUser user : users) {
-//            userResponses.add(new AppUserResponse(user));
-//        }
-//        return userResponses;
-
         // Java 8+ mapping logic (with Streams)
         return userDAO.getAll()
                 .stream() //i think that i need to get save and getall in userdao working for this part to compile
@@ -62,7 +54,6 @@ public class UserService {
         // TODO encrypt provided password before storing in the database
 
         newUser.setId(UUID.randomUUID().toString());
-        //newUser.setRole_id(//new UserRole("2", "Employee"));
         newUser.setIsActive(true); //TODO set this to false later so new users have to be approved by the admin, leave as is for now
         userDAO.save(newUser);
 
@@ -81,8 +72,6 @@ public class UserService {
         // TODO encrypt provided password (assumes password encryption is in place) to see if it matches what is in the DB
 
         User authUser = userDAO.findUserByUsernameAndPassword(username, password);
-        //todo use this^^ line of code so i can find a user to put as the author and later the resolver of a reimbursement
-        //todo hardcode a reimbursement type, and check how status is set in dbeaver
 
         if (authUser == null) {
             throw new AuthenticationException();

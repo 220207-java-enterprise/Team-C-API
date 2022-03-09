@@ -34,4 +34,3 @@ com\revature\erm\util\ConnectionFactory.class
 com\revature\erm\models\Reimbursement.class
 com\revature\erm\daos\ReimbursementDAO.class
 com\revature\erm\dtos\requests\NewUserRequest.class
-com\revature\erm\servlets\TestServlet.class
