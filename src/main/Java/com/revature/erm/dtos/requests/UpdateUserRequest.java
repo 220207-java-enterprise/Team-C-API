@@ -9,9 +9,9 @@ public class UpdateUserRequest {
     private String userId;
     private String userName;
     private String email;
-    private String userPassword;
-    private String givenName;
-    private String surname;
+    private String password;
+    private String firstName;
+    private String lastName;
     private Boolean isActive;
     private String roleId;
 
@@ -19,14 +19,14 @@ public class UpdateUserRequest {
         super();
     }
 
-    public UpdateUserRequest(String userId, String userName, String email, String userPassword, String givenName,
-                             String surname, Boolean isActive, String roleId) {
+    public UpdateUserRequest(String userId, String userName, String email, String password, String firstName,
+                             String lastName, Boolean isActive, String roleId) {
         this.userId = userId;
         this.userName = userName;
         this.email = email;
-        this.userPassword = userPassword;
-        this.givenName = givenName;
-        this.surname = surname;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.isActive = isActive;
         this.roleId = roleId;
     }
@@ -55,28 +55,28 @@ public class UpdateUserRequest {
         this.email = email;
     }
 
-    public String getUserPassword() {
-        return userPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getGivenName() {
-        return givenName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setGivenName(String givenName) {
-        this.givenName = givenName;
+    public void setFirstName(String givenName) {
+        this.firstName = firstName;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public Boolean getActive() {
@@ -99,7 +99,7 @@ public class UpdateUserRequest {
         UserDAO newDAO = new UserDAO();
         User user = newDAO.getById(this.userId);
         UserRole newRole = new UserRole(roleId, user.getRole().getRoleName());
-        return new User(this.userId, this.userName, this.email, this.userPassword, this.givenName, this.surname,
+        return new User(this.userId, this.userName, this.email, this.password, this.firstName, this.lastName,
                 this.isActive, newRole);
     }
 
@@ -109,9 +109,9 @@ public class UpdateUserRequest {
                 "userId='" + userId + '\'' +
                 ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
-                ", userPassword='" + userPassword + '\'' +
-                ", givenName='" + givenName + '\'' +
-                ", surname='" + surname + '\'' +
+                ", userPassword='" + password + '\'' +
+                ", givenName='" + firstName + '\'' +
+                ", surname='" + lastName + '\'' +
                 ", isActive=" + isActive +
                 ", roleId='" + roleId + '\'' +
                 '}';

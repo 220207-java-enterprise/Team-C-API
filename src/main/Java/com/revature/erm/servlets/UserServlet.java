@@ -103,6 +103,7 @@ public class UserServlet extends HttpServlet {
 //            }
             UpdateUserRequest updateUser = mapper.readValue(req.getInputStream(), UpdateUserRequest.class);
             User updatedUser = userService.updatedUser(updateUser);
+            System.out.println();
 
             resp.setStatus(201); // Succesful
             resp.setContentType("application/json");

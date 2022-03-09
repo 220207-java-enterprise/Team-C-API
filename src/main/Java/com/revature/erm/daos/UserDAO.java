@@ -205,14 +205,18 @@ public class UserDAO implements CrudDAO<User> {
                     "last_name = ?, " +
                     "email = ?, " +
                     "username = ?, " +
-                    "password = ? " +
-                    "WHERE role_id = ?");
+                    "password = ?, " +
+                    "is_active = ?, " +
+                    "role_id = ? " +
+                    "WHERE user_id = ?");
             pstmt.setString(1, updatedUser.getFirstName());
             pstmt.setString(2, updatedUser.getLastName());
             pstmt.setString(3, updatedUser.getEmail());
             pstmt.setString(4, updatedUser.getUsername());
             pstmt.setString(5, updatedUser.getPassword());
-            pstmt.setString(6, updatedUser.getId());
+            pstmt.setBoolean(6,updatedUser.isActive());
+            pstmt.setString(7, updatedUser.getRole().getId());
+            pstmt.setString(8, updatedUser.getId());
 
             // TODO allow role to be updated as well
 
