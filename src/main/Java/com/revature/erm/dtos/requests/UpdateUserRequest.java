@@ -67,7 +67,7 @@ public class UpdateUserRequest {
         return firstName;
     }
 
-    public void setFirstName(String givenName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
@@ -109,9 +109,9 @@ public class UpdateUserRequest {
                 "userId='" + userId + '\'' +
                 ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
-                ", userPassword='" + password + '\'' +
-                ", givenName='" + firstName + '\'' +
-                ", surname='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", isActive=" + isActive +
                 ", roleId='" + roleId + '\'' +
                 '}';

@@ -85,14 +85,7 @@ public class User {
     }
 
     public User(){
-        this.id = null;
-        this.username = null;
-        this.email = null;
-        this.password = null;
-        this.firstName = null;
-        this.lastName = null;
-        this.isActive = false;
-        this.role = null;
+        super();
     }
     public User(String id, String username, String email, String password,
                 String firstName, String lastName, boolean isActive, UserRole role) {
@@ -105,7 +98,6 @@ public class User {
         this.isActive = isActive;
         this.role = role;
 
-        //System.out.println(this.id);
     }
 
     public User(String firstName, String lastName, String email, String username, String password, UserRole role) {
