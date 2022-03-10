@@ -26,17 +26,23 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement> {
             conn.setAutoCommit(false);
             PreparedStatement pstmt = conn.prepareStatement("INSERT INTO ers_reimbursments VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             pstmt.setString(1, newReimbursement.getId());
+            //System.out.println(newReimbursement.getAmount());
             pstmt.setDouble(2, newReimbursement.getAmount());
             pstmt.setTimestamp(3, newReimbursement.getSubmitted());
             pstmt.setTimestamp(4, newReimbursement.getResolved());
             pstmt.setString(5, newReimbursement.getDescription());
             pstmt.setString(6, newReimbursement.getPayment_id());
+            System.out.println(newReimbursement.getAuthor_id());
             pstmt.setString(7, newReimbursement.getAuthor_id());//.getId());
-                pstmt.setString(8, newReimbursement.getResolver_id());//.getId());
+            System.out.println("before resolver_id");
+            pstmt.setString(8, newReimbursement.getResolver_id());//.getId());
+            System.out.println("before status_id");
             pstmt.setString(9, newReimbursement.getStatus_id());//getStatus().getId());
+            System.out.println("before type_id");
             pstmt.setString(10, newReimbursement.getType_id());//getType().getId());
 
-            System.out.println(pstmt);//do we need this??
+            System.out.println("yay");
+            //System.out.println(pstmt);//do we need this??
 
             int rowsInserted = pstmt.executeUpdate();
             if (rowsInserted != 1) {

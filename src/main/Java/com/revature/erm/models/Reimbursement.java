@@ -30,6 +30,10 @@ public class Reimbursement {
     }
 
     public Reimbursement(String id, Double amount, String description, Timestamp submitted) {
+        this.id = id;
+        this.amount = amount;
+        this.description = description;
+        this.submitted = submitted;
     }
 
     public String getId() {

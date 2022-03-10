@@ -39,14 +39,15 @@ public class ReimbursementService {
 
     public Reimbursement submitNewReimbursment(NewReimbursementRequest newReimbursementRequest) {
 
+        //System.out.println(newReimbursementRequest.toString());
         Reimbursement newReimbursement = newReimbursementRequest.extractReimbursement();
-
+        System.out.println("is new reimbursement null?: " + newReimbursement==null);
         // TODO encrypt provided password before storing in the database
 
         newReimbursement.setId(UUID.randomUUID().toString());
 
         newReimbursement.setAuthor_id(newReimbursementRequest.getAuthorId());
-        newReimbursement.setResolver_id("f3169ea6-0932-4941-85c5-f9b43e396118");
+        newReimbursement.setResolver_id("5c24b9ca-58ed-41c9-a619-7a19136b21f6");
 
         newReimbursement.setType_id("3");//setType(new ReimbursementType("3", "Other"));
         newReimbursement.setStatus_id("0");//setStatus(new ReimbursementStatus("0", "pending"));

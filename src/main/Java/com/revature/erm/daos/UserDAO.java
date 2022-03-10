@@ -81,7 +81,7 @@ public class UserDAO implements CrudDAO<User> {
 
     public User findUserByUsernameAndPassword(String username, String password) {
 
-        System.out.println("Printing at beginning of findUserByUsernameAndPassword");
+        //System.out.println("Printing at beginning of findUserByUsernameAndPassword");
         User authUser = null;
 
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {

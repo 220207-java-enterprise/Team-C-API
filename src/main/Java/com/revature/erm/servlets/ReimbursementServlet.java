@@ -94,7 +94,9 @@ public class ReimbursementServlet extends HttpServlet {
                 throw new InvalidRequestException("Not an Employee!");
             }
 
+            System.out.println("trying to read json values");
             NewReimbursementRequest reimbursementRequest = mapper.readValue(req.getInputStream(), NewReimbursementRequest.class);
+            reimbursementRequest.setAuthorId(ifEmp.getId());
             Reimbursement newReimbursement = reimbursementService.submitNewReimbursment(reimbursementRequest);
             resp.setStatus(201); // CREATED
             resp.setContentType("application/json");
