@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.erm.dtos.requests.LoginRequest;
 import com.revature.erm.dtos.responses.Principal;
 import com.revature.erm.models.User;
+import com.revature.erm.services.TokenService;
 import com.revature.erm.services.UserService;
 import com.revature.erm.util.exceptions.AuthenticationException;
 import com.revature.erm.util.exceptions.InvalidRequestException;
@@ -26,12 +27,14 @@ import java.io.PrintWriter;
 
 public class AuthServlet extends HttpServlet {
 
+    private final TokenService tokenService; //Added token service Khari
     private final UserService userService;
     private final ObjectMapper mapper;
-
-    public AuthServlet(UserService userService, ObjectMapper mapper) {
+                                                                    //Added token service Khari
+    public AuthServlet(UserService userService, ObjectMapper mapper, TokenService tokenService) {
         this.userService = userService;
         this.mapper = mapper;
+        this.tokenService= tokenService; //Added token service Khari
     }
 
     // Login endpoint
@@ -47,6 +50,7 @@ public class AuthServlet extends HttpServlet {
             String payload = mapper.writeValueAsString(principal);
 
             // Stateful session management
+            String token = tokenService.generateToken(principal); //Added token service Khari
             HttpSession httpSession = req.getSession();
             httpSession.setAttribute("authUser", principal);
             resp.setContentType("application/json");

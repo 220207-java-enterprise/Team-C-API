@@ -102,7 +102,7 @@ public class UserServlet extends HttpServlet {
 //                throw new InvalidRequestException("Not an Admin!");
 //            }
             UpdateUserRequest updateUser = mapper.readValue(req.getInputStream(), UpdateUserRequest.class);
-            System.out.println(updateUser.toString());//todo delete me
+            //System.out.println(updateUser.toString());//todo delete me
             User updatedUser = userService.updatedUser(updateUser);
 
 

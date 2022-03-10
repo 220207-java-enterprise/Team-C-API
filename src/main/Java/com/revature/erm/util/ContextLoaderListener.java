@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.erm.daos.ReimbursementDAO;
 import com.revature.erm.daos.UserDAO;
 import com.revature.erm.services.ReimbursementService;
+import com.revature.erm.services.TokenService;
 import com.revature.erm.services.UserService;
 import com.revature.erm.daos.UserDAO;
 import com.revature.erm.services.UserService;
@@ -23,6 +24,8 @@ public class ContextLoaderListener implements ServletContextListener {
         System.out.println("Spinning up foundations project web application");
 
         ObjectMapper mapper = new ObjectMapper();
+        JwtConfig jwtConfig = new JwtConfig(); //Added jwtconfig service Khari
+        TokenService tokenService = new TokenService(jwtConfig); //Added token service Khari
 
         UserDAO userDAO = new UserDAO();
         UserService userService = new UserService(userDAO);
@@ -32,7 +35,7 @@ public class ContextLoaderListener implements ServletContextListener {
         ReimbursementService reimbursementService = new ReimbursementService(reimbursementDAO);
         ReimbursementServlet reimbursementServlet = new ReimbursementServlet(reimbursementService, mapper);
 
-        AuthServlet authServlet = new AuthServlet(userService, mapper);
+        AuthServlet authServlet = new AuthServlet(userService, mapper, tokenService); //Added token service Khari
         //AuthServlet authServlet1 = new AuthServlet(reimbursementService, mapper);
         // TODO instantiate the ReimbursementServlet and wire all of its dependencies
 
