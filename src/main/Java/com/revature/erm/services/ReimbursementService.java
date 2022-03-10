@@ -43,16 +43,16 @@ public class ReimbursementService {
 
         // TODO encrypt provided password before storing in the database
 
-//        newReimbursement.setId(UUID.randomUUID().toString());
-//
-//        newReimbursement.setAuthor_id(newReimbursementRequest.getAuthorId());
-//        newReimbursement.setResolver_id("ba2fa4f0-35cd-4522-8cb7-a4589f9bebe7");
-//
-//        newReimbursement.setType_id("3");//setType(new ReimbursementType("3", "Other"));
-//        newReimbursement.setStatus_id("0");//setStatus(new ReimbursementStatus("0", "pending"));
-//        newReimbursement.setSubmitted(Timestamp.valueOf(LocalDateTime.now()));
-//        //newUser.setIsActive(true);
-//        reimbursementDAO.save(newReimbursement);
+        newReimbursement.setId(UUID.randomUUID().toString());
+
+        newReimbursement.setAuthor_id(newReimbursementRequest.getAuthorId());
+        newReimbursement.setResolver_id("f3169ea6-0932-4941-85c5-f9b43e396118");
+
+        newReimbursement.setType_id("3");//setType(new ReimbursementType("3", "Other"));
+        newReimbursement.setStatus_id("0");//setStatus(new ReimbursementStatus("0", "pending"));
+        newReimbursement.setSubmitted(Timestamp.valueOf(LocalDateTime.now()));
+        //newUser.setIsActive(true);
+       reimbursementDAO.save(newReimbursement);
 
         return newReimbursement;//newUser;
     }
