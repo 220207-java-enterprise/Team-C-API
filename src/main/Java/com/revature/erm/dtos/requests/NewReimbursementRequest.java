@@ -89,9 +89,7 @@ public class NewReimbursementRequest {
     }
 
     public Reimbursement extractReimbursement() { return new Reimbursement(resolver, amount, description,
-            new Timestamp(System.currentTimeMillis())/*, submitted,author, type*/); }
-
-    //public boolean isAuthorActive(Reimbursement reimbursement) { return reimbursement.getAuthor().isActive(); }
+            Timestamp.valueOf(LocalDateTime.now())/*, submitted,author, type*/); }
 
     public NewReimbursementRequest(Double amount, String description, String payment_id,
                                    User author, User resolver, ReimbursementType type){

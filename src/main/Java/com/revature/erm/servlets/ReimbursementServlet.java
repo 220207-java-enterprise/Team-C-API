@@ -122,7 +122,6 @@ public class ReimbursementServlet extends HttpServlet {
         try {
             Principal ifAdmin = tokenService.extractRequesterDetails(req.getHeader("Authorization"));
             //check if time expired on token = null
-            //System.out.println(ifAdmin);
             if(!(ifAdmin.getRole().equals("Finance Manager"))){
                 throw new InvalidRequestException("Not an Finance Manager!");
             }
@@ -138,16 +137,6 @@ public class ReimbursementServlet extends HttpServlet {
             String payload = mapper.writeValueAsString(new ResourceCreationResponse(updatedReimburement.getId()));
             respWriter.write(payload);
         }
-                /*NewReimbursementRequest newReimbursementRequest = mapper.readValue(req.getInputStream(), NewReimbursementRequest.class);
-                System.out.println("about to launch submitNewReimbursement in ReimbursementServlet.java");
-
-                newReimbursementRequest.setAuthorId(sessionUserId); //set authorId being pulled from the session
-                System.out.println("setAuthorId(sessionUserId) in reimbursementServlet has been called");
-                Reimbursement newReimbursement = reimbursementService.submitNewReimbursment(newReimbursementRequest);
-                resp.setStatus(201); // CREATED
-                resp.setContentType("application/json");
-                String payload = mapper.writeValueAsString(new ResourceCreationResponse(newReimbursement.getId()));
-                respWriter.write(payload);*/
 
         catch (InvalidRequestException | DatabindException e) {
             e.printStackTrace();

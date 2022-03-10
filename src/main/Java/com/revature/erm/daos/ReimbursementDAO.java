@@ -11,11 +11,6 @@ import java.util.*;
 
 public class ReimbursementDAO implements CrudDAO<Reimbursement> {
 
-    /*private final String rootSelect = "SELECT " +
-            "eu.user_id, eu.username, eu.email, eu.password, eu.first_name, eu.last_name, eu.is_active, eu.role_id, eur.role " +
-            "FROM ers_users eu " +
-            "JOIN ers_reimbursments er " +
-            "ON eu.user_id = eur._id ";*/
     private final String rootSelect = "SELECT " +
             "reimb_id, amount, submitted, resolved, description, payment_id, author_id, resolver_id, status_id, type_id " +
             "FROM ers_reimbursments ";
@@ -32,17 +27,11 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement> {
             pstmt.setTimestamp(4, newReimbursement.getResolved());
             pstmt.setString(5, newReimbursement.getDescription());
             pstmt.setString(6, newReimbursement.getPayment_id());
-            System.out.println(newReimbursement.getAuthor_id());
             pstmt.setString(7, newReimbursement.getAuthor_id());//.getId());
-            System.out.println("before resolver_id");
             pstmt.setString(8, newReimbursement.getResolver_id());//.getId());
-            System.out.println("before status_id");
             pstmt.setString(9, newReimbursement.getStatus_id());//getStatus().getId());
-            System.out.println("before type_id");
             pstmt.setString(10, newReimbursement.getType_id());//getType().getId());
 
-            System.out.println("yay");
-            //System.out.println(pstmt);//do we need this??
 
             int rowsInserted = pstmt.executeUpdate();
             if (rowsInserted != 1) {
@@ -132,34 +121,19 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement> {
     //todo just call the save function above instead of using this function
     public void update(Reimbursement updateThisReimbursement) {
 
-        //Reimbursement temp = getById(updateThisReimbursement.getId());
-        //temp.setStatus_id(updateThisReimbursement.getStatus_id());
-
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
 
             conn.setAutoCommit(false);
-            PreparedStatement pstmt = conn.prepareStatement("UPDATE ers_reimbursments set status_id = ?, resolved = ? WHERE reimb_id = ?");
+            PreparedStatement pstmt = conn.prepareStatement("UPDATE ers_reimbursments SET status_id = ?, resolved = ? WHERE reimb_id = ?");
             pstmt.setString(1, updateThisReimbursement.getStatus_id());
-            pstmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+            System.out.println(updateThisReimbursement.getStatus_id());
+            pstmt.setTimestamp(2, updateThisReimbursement.getResolved());
+            System.out.println("error 2");
             pstmt.setString(3, updateThisReimbursement.getId());
-
-            /*pstmt.setString(1, newReimbursement.getId());
-            pstmt.setInt(2, newReimbursement.getAmount());
-            pstmt.setTimestamp(3, newReimbursement.getSubmitted());
-            pstmt.setTimestamp(4, newReimbursement.getResolved());
-            pstmt.setString(5, newReimbursement.getDescription());
-            pstmt.setString(6, newReimbursement.getPayment_id());
-            pstmt.setString(7, newReimbursement.getAuthor_id());//.getId());
-            //if(newReimbursement.getResolver() != null)
-            pstmt.setString(8, newReimbursement.getResolver_id());//.getId());
-            //else
-            //pstmt.setString(8, null);
-            pstmt.setString(9, newReimbursement.getStatus_id());//getStatus().getId());
-            pstmt.setString(10, newReimbursement.getType_id());//getType().getId());
-
-            System.out.println(pstmt);*/
+            System.out.println(updateThisReimbursement.getId());
 
             int rowsInserted = pstmt.executeUpdate();
+            System.out.println("error 4");
             if (rowsInserted != 1) {
                 conn.rollback();
                 throw new ResourcePersistenceException("Failed to persist reimbursement to data source");

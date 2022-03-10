@@ -33,13 +33,11 @@ public class ReimbursementService {
 
         List<Reimbursement> reimbursements = reimbursementDAO.getAllByAuthorId(author);//new ArrayList<>();
 
-        //UpdateReimbursementRequest updateReimbursementRequest =
         return reimbursements;
     }
 
     public Reimbursement submitNewReimbursment(NewReimbursementRequest newReimbursementRequest) {
 
-        //System.out.println(newReimbursementRequest.toString());
         Reimbursement newReimbursement = newReimbursementRequest.extractReimbursement();
         System.out.println("is new reimbursement null?: " + newReimbursement==null);
         // TODO encrypt provided password before storing in the database

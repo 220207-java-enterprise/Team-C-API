@@ -90,6 +90,33 @@ create table ers_reimbursments(
 );
 
 
+insert into "ers_user_roles"("role_id", "role")
+				values ('0', 'Admin'),
+				('1', 'Finance Manager'),
+				('2', 'Employee');]
+
+insert into "ers_reimbursment_statuses"("status_id", "status")
+				values ('0', 'pending'),
+				('1', 'approved'),
+				('2', 'denied');
+
+insert into "ers_reimbursment_types"("type_id", "type")
+				values ('0', 'Lodging'),
+				('1', 'Travel'),
+				('2', 'Food'),
+				('3', 'Other');
+
+select * from ers_users;
+
+select * from ers_user_roles;
+
+select * from ers_reimbursment_types;
+
+select * from ers_reimbursment_statuses;
+
+select * from ers_reimbursments;
+
+
 
 
 
