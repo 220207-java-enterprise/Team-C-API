@@ -86,13 +86,14 @@ public class ReimbursementServlet extends HttpServlet {
 
         try {
             Principal ifEmp = tokenService.extractRequesterDetails(req.getHeader("Authorization"));
-            if(!(ifEmp.getRole().equals("Employee"))){
-                throw new InvalidRequestException("Not an Employee!");
-            }
             if (ifEmp == null) {
                 resp.setStatus(401);
                 return;
             }
+            if(!(ifEmp.getRole().equals("Employee"))){
+                throw new InvalidRequestException("Not an Employee!");
+            }
+
             NewReimbursementRequest reimbursementRequest = mapper.readValue(req.getInputStream(), NewReimbursementRequest.class);
             Reimbursement newReimbursement = reimbursementService.submitNewReimbursment(reimbursementRequest);
             resp.setStatus(201); // CREATED
