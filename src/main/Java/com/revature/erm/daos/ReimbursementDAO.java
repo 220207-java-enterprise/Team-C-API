@@ -26,7 +26,7 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement> {
             conn.setAutoCommit(false);
             PreparedStatement pstmt = conn.prepareStatement("INSERT INTO ers_reimbursments VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             pstmt.setString(1, newReimbursement.getId());
-            pstmt.setInt(2, newReimbursement.getAmount());
+            pstmt.setDouble(2, newReimbursement.getAmount());
             pstmt.setTimestamp(3, newReimbursement.getSubmitted());
             pstmt.setTimestamp(4, newReimbursement.getResolved());
             pstmt.setString(5, newReimbursement.getDescription());
@@ -65,7 +65,7 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement> {
                 matchingReimbursement= new Reimbursement();
                 //authUser.setId(rs.getString("user_id"));
                 matchingReimbursement.setId(rs.getString("reimb_id"));
-                matchingReimbursement.setAmount(rs.getInt("amount"));
+                matchingReimbursement.setAmount(rs.getDouble("amount"));
                 matchingReimbursement.setSubmitted(rs.getTimestamp("submitted"));
                 matchingReimbursement.setResolved(rs.getTimestamp("resolved"));
                 matchingReimbursement.setDescription(rs.getString("description"));
@@ -100,7 +100,7 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement> {
             while (rs.next()) {
                 Reimbursement reimbursement = new Reimbursement();
                 reimbursement.setId(rs.getString("reimb_id"));
-                reimbursement.setAmount(rs.getInt("amount"));
+                reimbursement.setAmount(rs.getDouble("amount"));
                 reimbursement.setSubmitted(rs.getTimestamp("submitted"));
                 reimbursement.setResolved(rs.getTimestamp("resolved"));
                 reimbursement.setDescription(rs.getString("description"));

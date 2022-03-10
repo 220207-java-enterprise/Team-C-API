@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class Reimbursement {
     private String id;
-    private int amount;
+    private Double amount;
     private Timestamp submitted;
     private Timestamp resolved = null;
     private String description;
@@ -22,6 +22,16 @@ public class Reimbursement {
 
     public Reimbursement() { super(); }
 
+    public Reimbursement(User resolver, Double amount, String description, Timestamp submitted) {
+        this.resolver_id = resolver.getId();
+        this.amount = amount;
+        this.description = description;
+        this.submitted = submitted;
+    }
+
+    public Reimbursement(String id, Double amount, String description, Timestamp submitted) {
+    }
+
     public String getId() {
         return id;
     }
@@ -30,11 +40,11 @@ public class Reimbursement {
         this.id = id;
     }
 
-    public int getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
@@ -134,7 +144,7 @@ public class Reimbursement {
         this.type_id = type_id;
     }
 
-    Reimbursement(String id, int amount, Timestamp submitted, Timestamp resolved, String description,
+    Reimbursement(String id, Double amount, Timestamp submitted, Timestamp resolved, String description,
                   String payment_id, String author, User resolver, String status, String type) {
         //this.id = id;
         this.amount = amount;
@@ -148,7 +158,7 @@ public class Reimbursement {
         this.type_id = type;
 
     }
-    public Reimbursement(int amount, String description/*, Timestamp submitted, User author, ReimbursementType type*/) {
+    public Reimbursement(Double amount, String description/*, Timestamp submitted, User author, ReimbursementType type*/) {
         this.amount = amount;
         //this.submitted = submitted;
         this.description = description;
