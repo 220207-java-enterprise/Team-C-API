@@ -43,6 +43,7 @@ public class ReimbursementService {
 
         // TODO encrypt provided password before storing in the database
 
+
         newReimbursement.setId(UUID.randomUUID().toString());
 
         newReimbursement.setAuthor_id(newReimbursementRequest.getAuthorId());

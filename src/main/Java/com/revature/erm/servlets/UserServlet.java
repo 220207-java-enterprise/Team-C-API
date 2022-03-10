@@ -8,6 +8,7 @@ import com.revature.erm.dtos.responses.Principal;
 import com.revature.erm.dtos.responses.ResourceCreationResponse;
 import com.revature.erm.dtos.responses.UserResponse;
 import com.revature.erm.models.User;
+import com.revature.erm.services.TokenService;
 import com.revature.erm.services.UserService;
 import com.revature.erm.util.exceptions.InvalidRequestException;
 import com.revature.erm.util.exceptions.ResourceConflictException;
@@ -23,10 +24,12 @@ import java.util.List;
 
 public class UserServlet extends HttpServlet {
 
+    private final TokenService tokenService;
     private final UserService userService;
     private final ObjectMapper mapper;
 
-    public UserServlet(UserService userService, ObjectMapper mapper) {
+    public UserServlet(TokenService tokenService, UserService userService,  ObjectMapper mapper) {
+        this.tokenService = tokenService;
         this.userService = userService;
         this.mapper = mapper;
     }
@@ -95,12 +98,12 @@ public class UserServlet extends HttpServlet {
         PrintWriter respWriter = resp.getWriter();
 
         try{
-//            Principal ifAdmin = tokenService.extractRequesterDetails(req.getHeader("Authorization"));
-//            //check if time expired on token = null
-//            //System.out.println(ifAdmin);
-//            if(!(ifAdmin.getRoleId().equals("Admin"))){
-//                throw new InvalidRequestException("Not an Admin!");
-//            }
+            Principal ifAdmin = tokenService.extractRequesterDetails(req.getHeader("Authorization"));
+            //check if time expired on token = null
+            //System.out.println(ifAdmin);
+            if(!(ifAdmin.getRole().equals("Admin"))){
+                throw new InvalidRequestException("Not an Admin!");
+            }
             UpdateUserRequest updateUser = mapper.readValue(req.getInputStream(), UpdateUserRequest.class);
             //System.out.println(updateUser.toString());//todo delete me
             User updatedUser = userService.updatedUser(updateUser);

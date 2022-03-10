@@ -49,10 +49,9 @@ public class AuthServlet extends HttpServlet {
             Principal principal = new Principal(userService.login(loginRequest));
             String payload = mapper.writeValueAsString(principal);
 
-            // Stateful session management
+            // Added token
             String token = tokenService.generateToken(principal); //Added token service Khari
-            HttpSession httpSession = req.getSession();
-            httpSession.setAttribute("authUser", principal);
+            resp.setHeader("Authorization", token);
             resp.setContentType("application/json");
             writer.write(payload);
 
