@@ -1,23 +1,39 @@
 package com.revature.erm.models;
+import javax.persistence.*;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
+@Entity
+@Table (name = "reimbursement")
 public class Reimbursement {
+    @Id
     private String id;
+    @Column (name = "amount", nullable = false, columnDefinition = "numeric (6,2)")
     private int amount;
+    @Column (name = "submitted", columnDefinition = "timestamp default current_timestamp")
     private Timestamp submitted;
+    @Column (name = "resolved", columnDefinition = "timestamp default current_timestamp")
     private Timestamp resolved = null;
+    @Column (name = "description", nullable = false)
     private String description;
+    @Column (name = "payment_id")
     private String payment_id;
     /*private User author;
     private User resolver = null;*/
+    @OneToOne
+    @JoinColumn (name = "author_id", nullable = false)
     private String author_id;
+    @OneToOne
+    @JoinColumn (name = "resolver_id", nullable = false)
     private String resolver_id;
     //private ReimbursementStatus status;
     //private ReimbursementType type;
+    @OneToOne
+    @JoinColumn(name = "status_id", nullable = false)
     private String status_id;
+    @OneToOne
+    @JoinColumn(name = "type_id", nullable = false)
     private String type_id;
 
     public Reimbursement() { super(); }
