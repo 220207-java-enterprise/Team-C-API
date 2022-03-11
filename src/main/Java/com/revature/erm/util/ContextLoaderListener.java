@@ -11,6 +11,8 @@ import com.revature.erm.services.UserService;
 import com.revature.erm.servlets.AuthServlet;
 import com.revature.erm.servlets.ReimbursementServlet;
 import com.revature.erm.servlets.UserServlet;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
@@ -19,8 +21,13 @@ import javax.servlet.ServletContextListener;
 
 public class ContextLoaderListener implements ServletContextListener {
 
+    private static Logger logger = LogManager.getLogger(ContextLoaderListener.class);
+
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+
+        logger.debug("Initializing p2_foundations_project_teamc web application");
+
         System.out.println("Spinning up foundations project web application");
 
         ObjectMapper mapper = new ObjectMapper();
@@ -50,6 +57,7 @@ public class ContextLoaderListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
+        logger.debug("Shutting down p2_foundations_project_teamc web application");
         System.out.println("Closing down foundations project web application");
     }
 

@@ -12,6 +12,8 @@ import com.revature.erm.services.TokenService;
 import com.revature.erm.services.UserService;
 import com.revature.erm.util.exceptions.InvalidRequestException;
 import com.revature.erm.util.exceptions.ResourceConflictException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,9 +22,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.List;
 
 public class UserServlet extends HttpServlet {
+
+    private static Logger logger = LogManager.getLogger(UserServlet.class);
 
     private final TokenService tokenService;
     private final UserService userService;
@@ -37,9 +42,12 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        logger.debug("UserServlet#doGet invoked with args: " + Arrays.asList(req, resp));
+
         String[] reqFrags = req.getRequestURI().split("/");
         if (reqFrags.length == 4 && reqFrags[3].equals("availability")) {
             checkAvailability(req, resp);
+            logger.debug("UserServlet#doGet returned successfully");
             return; // necessary, otherwise we end up doing more work than was requested
         }
 
@@ -48,6 +56,7 @@ public class UserServlet extends HttpServlet {
         // get users (all, by id, by w/e)
         HttpSession session = req.getSession(false);
         if (session == null) {
+            logger.warn("Unauthenticated request made to UserServlet#doGet");
             resp.setStatus(401);
             return;
         }
@@ -55,6 +64,7 @@ public class UserServlet extends HttpServlet {
         Principal requester = (Principal) session.getAttribute("authUser");
 
         if (!requester.getRole().equals("ADMIN")) {
+            logger.warn("Unauthorized request made by user: " + requester.getUsername());
             resp.setStatus(403); // FORBIDDEN
         }
 
@@ -62,6 +72,8 @@ public class UserServlet extends HttpServlet {
         String payload = mapper.writeValueAsString(users);
         resp.setContentType("application/json");
         resp.getWriter().write(payload);
+
+        logger.debug("UserServlet#doGet returned successfully");
 
 
     }
@@ -87,6 +99,7 @@ public class UserServlet extends HttpServlet {
         } catch (ResourceConflictException e) {
             resp.setStatus(409); // CONFLICT
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             e.printStackTrace(); // include for debugging purposes; ideally log it to a file
             resp.setStatus(500);
         }
