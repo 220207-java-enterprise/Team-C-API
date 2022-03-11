@@ -15,6 +15,7 @@ com\revature\erm\dtos\responses\ResourceCreationResponse.class
 com\revature\erm\daos\ReimbursementStatusDAO.class
 com\revature\erm\servlets\AuthServlet.class
 com\revature\erm\dtos\requests\ListUserReimbursementsRequest.class
+com\revature\erm\dtos\requests\UpdateUserRequest.class
 com\revature\erm\util\JwtConfig.class
 com\revature\erm\dtos\responses\UserResponse.class
 com\revature\erm\util\exceptions\AuthenticationException.class

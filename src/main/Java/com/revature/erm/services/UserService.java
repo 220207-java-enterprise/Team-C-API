@@ -3,6 +3,7 @@ package com.revature.erm.services;
 import com.revature.erm.daos.UserDAO;
 import com.revature.erm.dtos.requests.LoginRequest;
 import com.revature.erm.dtos.requests.NewUserRequest;
+import com.revature.erm.dtos.requests.UpdateUserRequest;
 import com.revature.erm.dtos.responses.UserResponse;
 import com.revature.erm.models.User;
 import com.revature.erm.util.exceptions.AuthenticationException;
@@ -88,7 +89,11 @@ public class UserService {
 
         return newUser;
     }
-
+    public User updatedUser(UpdateUserRequest updateRequest) {
+        User updatedUser = updateRequest.extractUser();
+        userDAO.update(updatedUser);
+        return updatedUser;
+    }
     public User login(LoginRequest loginRequest) {
 
         String username = loginRequest.getUsername();

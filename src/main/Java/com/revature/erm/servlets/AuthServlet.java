@@ -41,6 +41,11 @@ public class AuthServlet extends HttpServlet {
         this.mapper = mapper;
     }
 
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println(req.getServletContext().getInitParameter("programmaticParam"));
+    }
+
     // Login endpoint
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -54,8 +59,11 @@ public class AuthServlet extends HttpServlet {
             String payload = mapper.writeValueAsString(principal);
 
             // Stateful session management
-            HttpSession httpSession = req.getSession();
-            httpSession.setAttribute("authUser", principal);
+//            HttpSession httpSession = req.getSession();
+//            httpSession.setAttribute("authUser", principal);
+
+            String token = tokenService.generateToken(principal);
+            resp.setHeader("Authorization", token);
             resp.setContentType("application/json");
             writer.write(payload);
 
@@ -71,4 +79,3 @@ public class AuthServlet extends HttpServlet {
     }
 
 }
-

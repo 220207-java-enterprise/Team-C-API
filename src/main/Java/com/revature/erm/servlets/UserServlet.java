@@ -3,6 +3,7 @@ package com.revature.erm.servlets;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.erm.dtos.requests.NewUserRequest;
+import com.revature.erm.dtos.requests.UpdateUserRequest;
 import com.revature.erm.dtos.responses.Principal;
 import com.revature.erm.dtos.responses.ResourceCreationResponse;
 import com.revature.erm.dtos.responses.UserResponse;
@@ -107,6 +108,38 @@ public class UserServlet extends HttpServlet {
             resp.setStatus(409); // CONFLICT
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
+            resp.setStatus(500);
+        }
+
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        PrintWriter respWriter = resp.getWriter();
+
+        try{
+            Principal ifAdmin = tokenService.extractRequesterDetails(req.getHeader("Authorization"));
+            //check if time expired on token = null
+            //System.out.println(ifAdmin);
+            if(!(ifAdmin.getRole().equals("0"))){
+                throw new InvalidRequestException("Not an Admin!");
+            }
+            UpdateUserRequest updateUser = mapper.readValue(req.getInputStream(), UpdateUserRequest.class);
+            User updatedUser = userService.updatedUser(updateUser);
+
+            resp.setStatus(201); // Succesful
+            resp.setContentType("application/json");
+            String payload = mapper.writeValueAsString(new ResourceCreationResponse(updatedUser.getId()));
+            respWriter.write(payload);
+
+        } catch (InvalidRequestException | DatabindException e) {
+            resp.setStatus(400); // BAD REQUEST
+            e.printStackTrace();
+        } catch (ResourceConflictException e) {
+            e.printStackTrace();
+            resp.setStatus(409); // CONFLICT
+        } catch (Exception e) {
+            e.printStackTrace();
             resp.setStatus(500);
         }
 
