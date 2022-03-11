@@ -9,20 +9,26 @@ import com.revature.erm.models.UserRole;
 import com.revature.erm.util.exceptions.AuthenticationException;
 import com.revature.erm.util.exceptions.InvalidRequestException;
 import com.revature.erm.util.exceptions.ResourceConflictException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Service
 public class UserService {
+
 
     private UserDAO userDAO; // a dependency of UserService
 
     // Constructor injection
+    //@Autowired implied
     public UserService(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
+
 
     public List<UserResponse> getAllUsers() {
 
