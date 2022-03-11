@@ -1,9 +1,11 @@
 package com.revature.erm.daos;
 
 import com.revature.erm.models.ReimbursementStatus;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class ReimbursementStatusDAO implements CrudDAO<ReimbursementStatus>{
     public void save(ReimbursementStatus newObject) {
 

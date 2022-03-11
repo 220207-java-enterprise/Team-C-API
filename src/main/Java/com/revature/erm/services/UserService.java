@@ -3,37 +3,67 @@ package com.revature.erm.services;
 import com.revature.erm.daos.UserDAO;
 import com.revature.erm.dtos.requests.LoginRequest;
 import com.revature.erm.dtos.requests.NewUserRequest;
+import com.revature.erm.dtos.requests.UpdateUserRequest;
 import com.revature.erm.dtos.responses.UserResponse;
 import com.revature.erm.models.User;
-import com.revature.erm.models.UserRole;
 import com.revature.erm.util.exceptions.AuthenticationException;
 import com.revature.erm.util.exceptions.InvalidRequestException;
 import com.revature.erm.util.exceptions.ResourceConflictException;
+
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Service
 public class UserService {
 
+    /*
+     field injection: really readable, but requires Spring to use Reflection
+     in order to set the private field
+     */
+    // @Autowired // field injection
     private UserDAO userDAO; // a dependency of UserService
 
-    // Constructor injection
+    /* Constructor injection: a little less readable, can't change the
+     * dependency later, but it makes the most sense logically with
+     * what a dependency is supposed to be (a requirement to create the object)
+     *
+     * if you only have one constructor, you can leave out the Autowired annotation
+     */
+    //@Autowired
     public UserService(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
+    /* setter injection: less readable, but allows you to change
+     * the value of the dependency later in the code if needed
+     */
+//    @Autowired
+//    public void setUserDao(UserDAO userDao) {
+//    	this.userDAO = userDao;
+//    }
+
     public List<UserResponse> getAllUsers() {
+
+        // Pre-Java 8 mapping logic (without Streams)
+//        List<AppUser> users = userDAO.getAll();
+//        List<AppUserResponse> userResponses = new ArrayList<>();
+//        for (AppUser user : users) {
+//            userResponses.add(new AppUserResponse(user));
+//        }
+//        return userResponses;
 
         // Java 8+ mapping logic (with Streams)
         return userDAO.getAll()
-                .stream() //i think that i need to get save and getall in userdao working for this part to compile
-                .map(UserResponse::new)
-                .collect(Collectors.toList());
+                .stream()
+                .map(UserResponse::new) // intermediate operation
+                .collect(Collectors.toList()); // terminal operation
     }
 
-    public User register(NewUserRequest newUserRequest) throws IOException {
+    public User register(NewUserRequest newUserRequest) {
 
         User newUser = newUserRequest.extractUser();
 
@@ -54,12 +84,16 @@ public class UserService {
         // TODO encrypt provided password before storing in the database
 
         newUser.setId(UUID.randomUUID().toString());
-        newUser.setIsActive(true); //TODO set this to false later so new users have to be approved by the admin, leave as is for now
+        newUser.setIsActive(false);
         userDAO.save(newUser);
 
         return newUser;
     }
-
+    public User updatedUser(UpdateUserRequest updateRequest) {
+        User updatedUser = updateRequest.extractUser();
+        userDAO.update(updatedUser);
+        return updatedUser;
+    }
     public User login(LoginRequest loginRequest) {
 
         String username = loginRequest.getUsername();
@@ -81,29 +115,25 @@ public class UserService {
 
     }
 
-    private boolean isUserValid(User appUser) {
+    public boolean isUserValid(User appUser) {
 
         // First name and last name are not just empty strings or filled with whitespace
         if (appUser.getFirstName().trim().equals("") || appUser.getLastName().trim().equals("")) {
-            System.out.println("Bad first or last name");
             return false;
         }
 
         // Usernames must be a minimum of 8 and a max of 25 characters in length, and only contain alphanumeric characters.
         if (!isUsernameValid(appUser.getUsername())) {
-            System.out.println("Bad username");
             return false;
         }
 
         // Passwords require a minimum eight characters, at least one uppercase letter, one lowercase
         // letter, one number and one special character
         if (!isPasswordValid(appUser.getPassword())) {
-            System.out.println("Bad password");
             return false;
         }
 
         // Basic email validation
-        System.out.println("Email valid? :: " + isEmailValid(appUser.getEmail()));
         return isEmailValid(appUser.getEmail());
 
     }
@@ -123,10 +153,12 @@ public class UserService {
     }
 
     public boolean isUsernameAvailable(String username) {
+        if (username == null || !isUsernameValid(username)) return false;
         return userDAO.findUserByUsername(username) == null;
     }
 
     public boolean isEmailAvailable(String email) {
+        if (email == null || !isEmailValid(email)) return false;
         return userDAO.findUserByEmail(email) == null;
     }
 }
