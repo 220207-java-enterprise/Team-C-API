@@ -20,7 +20,6 @@ com\revature\erm\dtos\responses\UserResponse.class
 com\revature\erm\util\exceptions\AuthenticationException.class
 com\revature\erm\dtos\responses\Principal.class
 com\revature\erm\services\TokenService.class
-com\revature\erm\Main.class
 com\revature\erm\services\ReimbursementService.class
 com\revature\erm\daos\UserDAO.class
 com\revature\erm\daos\CrudDAO.class

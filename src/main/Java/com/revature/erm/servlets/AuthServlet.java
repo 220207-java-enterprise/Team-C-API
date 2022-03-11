@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.erm.dtos.requests.LoginRequest;
 import com.revature.erm.dtos.responses.Principal;
 import com.revature.erm.models.User;
+import com.revature.erm.services.TokenService;
 import com.revature.erm.services.UserService;
 import com.revature.erm.util.exceptions.AuthenticationException;
 import com.revature.erm.util.exceptions.InvalidRequestException;
@@ -15,6 +16,8 @@ import com.revature.erm.dtos.responses.Principal;
 import com.revature.erm.services.UserService;
 import com.revature.erm.util.exceptions.AuthenticationException;
 import com.revature.erm.util.exceptions.InvalidRequestException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,12 +27,16 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+@Component
 public class AuthServlet extends HttpServlet {
 
+    private final TokenService tokenService;
     private final UserService userService;
     private final ObjectMapper mapper;
 
-    public AuthServlet(UserService userService, ObjectMapper mapper) {
+    @Autowired
+    public AuthServlet(TokenService tokenService, UserService userService, ObjectMapper mapper) {
+        this.tokenService = tokenService;
         this.userService = userService;
         this.mapper = mapper;
     }

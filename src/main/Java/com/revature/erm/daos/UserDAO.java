@@ -1,12 +1,11 @@
 package com.revature.erm.daos;
 
 import com.revature.erm.models.User;
-import com.revature.erm.models.UserRole;
 import com.revature.erm.util.ConnectionFactory;
 import com.revature.erm.util.exceptions.DataSourceException;
 import com.revature.erm.util.exceptions.ResourcePersistenceException;
 import org.springframework.stereotype.Repository;
-//import com.sun.xml.internal.bind.v2.TODO;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

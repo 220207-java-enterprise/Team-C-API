@@ -1,46 +1,36 @@
 package com.revature.erm.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.erm.daos.ReimbursementDAO;
-import com.revature.erm.daos.UserDAO;
-import com.revature.erm.services.ReimbursementService;
-import com.revature.erm.services.UserService;
-import com.revature.erm.daos.UserDAO;
-import com.revature.erm.services.UserService;
+import com.revature.erm.config.AppConfig;
 import com.revature.erm.servlets.AuthServlet;
 import com.revature.erm.servlets.ReimbursementServlet;
 import com.revature.erm.servlets.UserServlet;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.web.context.ConfigurableWebApplicationContext;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class ContextLoaderListener implements ServletContextListener {
 
     private static Logger logger = LogManager.getLogger(ContextLoaderListener.class);
+    // Spring ApplicationContext (IoC container)
+    ApplicationContext appContext;
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         logger.debug("Spinning up foundations project web application");
 
-        ObjectMapper mapper = new ObjectMapper();
+        appContext = new AnnotationConfigApplicationContext(AppConfig.class);
 
-        UserDAO userDAO = new UserDAO();
-        UserService userService = new UserService(userDAO);
-        UserServlet userServlet = new UserServlet(userService, mapper);
+        UserServlet userServlet = appContext.getBean(UserServlet.class);
+        AuthServlet authServlet = appContext.getBean(AuthServlet.class);
+        ReimbursementServlet reimbursementServlet = appContext.getBean(ReimbursementServlet.class);
 
-        ReimbursementDAO reimbursementDAO = new ReimbursementDAO();
-        ReimbursementService reimbursementService = new ReimbursementService(reimbursementDAO);
-        ReimbursementServlet reimbursementServlet = new ReimbursementServlet(reimbursementService, mapper);
-
-        AuthServlet authServlet = new AuthServlet(userService, mapper);
-        //AuthServlet authServlet1 = new AuthServlet(reimbursementService, mapper);
-        // TODO instantiate the ReimbursementServlet and wire all of its dependencies
-
-        // TODO register the ReimbursementServlet to handle requests to /reimbursements
-        // Programmatic Servlet Registration
         ServletContext context = sce.getServletContext();
         context.addServlet("UserServlet", userServlet).addMapping("/users/*");
         context.addServlet("ReimbursementServlet", reimbursementServlet).addMapping("/reimbursements/*");
