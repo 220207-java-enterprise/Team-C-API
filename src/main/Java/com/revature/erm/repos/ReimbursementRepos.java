@@ -9,15 +9,15 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ReimburstmentRepos extends CrudRepository<Reimbursement, String> {
+public interface ReimbursementRepos extends CrudRepository<Reimbursement, String> {
     List<Reimbursement> getReimbursementsByreimbId(double size);
 
-    @Query("from Reimbursement b where b.owner = ?1")
-    List<Reimbursement> getBootsByOwner(User owner);
+    @Query("from Reimbursement r where r.author_id = ?1")
+    List<Reimbursement> getReimbursementByAuthor_Id(User author_id);
 
-    @Query(
+    /*@Query(
             value = "SELECT * from reimbursement where material = ?1",
             nativeQuery = true
     )
-    List<Reimbursement> findReimbursementByMaterial(String material);
+    List<Reimbursement> findReimbursementByMaterial(String material);*/
 }
