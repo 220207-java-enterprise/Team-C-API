@@ -7,5 +7,6 @@ public interface CrudDAO<T> {
     T getById(String id);
     List<T> getAll(); // TODO return a dynamically sizeable
     void update(T updatedObject);
+    void deleteById(String id);
 
 }
