@@ -1,7 +1,17 @@
 package com.revature.erm.models;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table (name = "ers_user_roles")
 public class UserRole {
+    @Id
     private String id;
+
+    @Column (name = "role_name", nullable = false)
     private String rolename;
 
     public String getId() {
@@ -24,16 +34,7 @@ public class UserRole {
         this.id = id;
         this.rolename = rolename;
     }
-
-    public UserRole(String id) {
-        this.id = id;
-        switch (id){
-            case "0": this.rolename = "Admin";
-            break;
-            case "1": this.rolename = "Finance Manager";
-            break;
-            case "2": this.rolename = "Employee";
-            break;
-        }
+    public UserRole(){
+        super();
     }
 }

@@ -1,11 +1,11 @@
 package com.revature.erm.util;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+
 
 public class ConnectionFactory {
 
@@ -38,7 +38,8 @@ public class ConnectionFactory {
 
     public Connection getConnection() throws SQLException {
 
-        Connection conn = DriverManager.getConnection(props.getProperty("db-url"), props.getProperty("db-username"), props.getProperty("db-password"));
+        Connection conn = DriverManager.getConnection(props.getProperty("db-url"),
+                props.getProperty("db-username"), props.getProperty("db-password"));
 
         if (conn == null) {
             throw new RuntimeException("Could not establish connection with the database!");

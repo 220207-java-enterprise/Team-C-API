@@ -13,20 +13,20 @@ public class UpdateUserRequest {
     private String firstName;
     private String lastName;
     private Boolean isActive;
-    private String roleId;
+    private UserRole roleId;
 
     public UpdateUserRequest() {
         super();
     }
 
-    public UpdateUserRequest(String userId, String userName, String email, String password, String firstName,
-                             String lastName, Boolean isActive, String roleId) {
+    public UpdateUserRequest(String userId, String userName, String email, String userPassword, String givenName,
+                             String surname, Boolean isActive, UserRole roleId) {
         this.userId = userId;
         this.userName = userName;
         this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.password = userPassword;
+        this.firstName = givenName;
+        this.lastName = surname;
         this.isActive = isActive;
         this.roleId = roleId;
     }
@@ -87,20 +87,17 @@ public class UpdateUserRequest {
         isActive = active;
     }
 
-    public String getRoleId() {
+    public UserRole getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(String roleId) {
+    public void setRoleId(UserRole roleId) {
         this.roleId = roleId;
     }
 
     public User extractUser() {
-        UserDAO newDAO = new UserDAO();
-        User user = newDAO.getById(this.userId);
-        UserRole newRole = new UserRole(roleId, user.getRole().getRoleName());
         return new User(this.userId, this.userName, this.email, this.password, this.firstName, this.lastName,
-                this.isActive, newRole);
+                this.isActive, this.roleId);
     }
 
     @Override
@@ -109,9 +106,9 @@ public class UpdateUserRequest {
                 "userId='" + userId + '\'' +
                 ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                ", userPassword='" + password + '\'' +
+                ", givenName='" + firstName + '\'' +
+                ", surname='" + lastName + '\'' +
                 ", isActive=" + isActive +
                 ", roleId='" + roleId + '\'' +
                 '}';

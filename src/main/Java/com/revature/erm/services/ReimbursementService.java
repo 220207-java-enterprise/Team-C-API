@@ -9,6 +9,7 @@ import com.revature.erm.models.*;
 import com.revature.erm.util.exceptions.InvalidRequestException;
 import com.revature.erm.util.exceptions.ResourceConflictException;
 import org.postgresql.util.ReaderInputStream;
+import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class ReimbursementService {
 
     private ReimbursementDAO reimbursementDAO;

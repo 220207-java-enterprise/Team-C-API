@@ -16,6 +16,8 @@ import com.revature.erm.dtos.responses.Principal;
 import com.revature.erm.services.UserService;
 import com.revature.erm.util.exceptions.AuthenticationException;
 import com.revature.erm.util.exceptions.InvalidRequestException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,16 +27,23 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+@Component
 public class AuthServlet extends HttpServlet {
 
-    private final TokenService tokenService; //Added token service Khari
+    private final TokenService tokenService;
     private final UserService userService;
     private final ObjectMapper mapper;
-                                                                    //Added token service Khari
-    public AuthServlet(UserService userService, ObjectMapper mapper, TokenService tokenService) {
+
+    @Autowired
+    public AuthServlet(TokenService tokenService, UserService userService, ObjectMapper mapper) {
+        this.tokenService = tokenService;
         this.userService = userService;
         this.mapper = mapper;
-        this.tokenService= tokenService; //Added token service Khari
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println(req.getServletContext().getInitParameter("programmaticParam"));
     }
 
     // Login endpoint
@@ -49,8 +58,11 @@ public class AuthServlet extends HttpServlet {
             Principal principal = new Principal(userService.login(loginRequest));
             String payload = mapper.writeValueAsString(principal);
 
-            // Added token
-            String token = tokenService.generateToken(principal); //Added token service Khari
+            // Stateful session management
+//            HttpSession httpSession = req.getSession();
+//            httpSession.setAttribute("authUser", principal);
+
+            String token = tokenService.generateToken(principal);
             resp.setHeader("Authorization", token);
             resp.setContentType("application/json");
             writer.write(payload);
@@ -67,4 +79,3 @@ public class AuthServlet extends HttpServlet {
     }
 
 }
-

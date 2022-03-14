@@ -10,20 +10,20 @@ public class NewUserRequest {
     private String email;
     private String username;
     private String password;
-    private UserRole role;
-
+    private UserRole role_id;
+    //private Role role
 
     public NewUserRequest() {
         super();
     }
 
-    public NewUserRequest(String firstName, String lastName, String email, String username, String password, String role) {
+    public NewUserRequest(String firstName, String lastName, String email, String username, String password, UserRole role_id) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.username = username;
         this.password = password;
-        this.role = new UserRole(role);
+        this.role_id = role_id;
     }
 
     public String getFirstName() {
@@ -66,16 +66,16 @@ public class NewUserRequest {
         this.password = password;
     }
 
-    public UserRole getRole() {
-        return role;
+    public UserRole getRole_id() {
+        return role_id;
     }
 
-    public void setRole(UserRole role) {
-        this.role = role;
+    public void setRole_id(UserRole role_id) {
+        this.role_id = role_id;
     }
 
     public User extractUser() {
-        return new User(firstName, lastName, email, username, password, role);
+        return new User(firstName, lastName, email, username, password, role_id);
     }
 
     @Override

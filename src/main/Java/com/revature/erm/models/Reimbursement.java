@@ -1,40 +1,42 @@
 package com.revature.erm.models;
+import javax.persistence.*;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
+@Entity
+@Table (name = "reimbursement")
 public class Reimbursement {
+    @Id
     private String id;
-    private Double amount;
+    @Column (name = "amount", nullable = false, columnDefinition = "numeric (6,2)")
+    private int amount;
+    @Column (name = "submitted", columnDefinition = "timestamp default current_timestamp")
     private Timestamp submitted;
+    @Column (name = "resolved", columnDefinition = "timestamp default current_timestamp")
     private Timestamp resolved = null;
+    @Column (name = "description", nullable = false)
     private String description;
+    @Column (name = "payment_id")
     private String payment_id;
     /*private User author;
     private User resolver = null;*/
+    @OneToOne
+    @JoinColumn (name = "author_id", nullable = false)
     private String author_id;
+    @OneToOne
+    @JoinColumn (name = "resolver_id", nullable = false)
     private String resolver_id;
     //private ReimbursementStatus status;
     //private ReimbursementType type;
+    @OneToOne
+    @JoinColumn(name = "status_id", nullable = false)
     private String status_id;
+    @OneToOne
+    @JoinColumn(name = "type_id", nullable = false)
     private String type_id;
 
     public Reimbursement() { super(); }
-
-    public Reimbursement(User resolver, Double amount, String description, Timestamp submitted) {
-        this.resolver_id = resolver.getId();
-        this.amount = amount;
-        this.description = description;
-        this.submitted = submitted;
-    }
-
-    public Reimbursement(String id, Double amount, String description, Timestamp submitted) {
-        this.id = id;
-        this.amount = amount;
-        this.description = description;
-        this.submitted = submitted;
-    }
 
     public String getId() {
         return id;
@@ -44,11 +46,11 @@ public class Reimbursement {
         this.id = id;
     }
 
-    public Double getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 
@@ -148,7 +150,7 @@ public class Reimbursement {
         this.type_id = type_id;
     }
 
-    Reimbursement(String id, Double amount, Timestamp submitted, Timestamp resolved, String description,
+    Reimbursement(String id, int amount, Timestamp submitted, Timestamp resolved, String description,
                   String payment_id, String author, User resolver, String status, String type) {
         //this.id = id;
         this.amount = amount;
@@ -162,7 +164,7 @@ public class Reimbursement {
         this.type_id = type;
 
     }
-    public Reimbursement(Double amount, String description/*, Timestamp submitted, User author, ReimbursementType type*/) {
+    public Reimbursement(int amount, String description/*, Timestamp submitted, User author, ReimbursementType type*/) {
         this.amount = amount;
         //this.submitted = submitted;
         this.description = description;

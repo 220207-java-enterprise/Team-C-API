@@ -1,9 +1,11 @@
 package com.revature.erm.daos;
 
 import com.revature.erm.models.UserRole;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class UserRoleDAO implements CrudDAO<UserRole> {
     public void save(UserRole newObject) {
 
