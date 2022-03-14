@@ -11,14 +11,14 @@ import java.time.LocalDateTime;
 public class NewReimbursementRequest {
 
     //private String id;
-    private int amount;
+    private Double amount;
     private Timestamp submitted;
     //private LocalDateTime resolved;
     private String description;
     private String payment_id = null;
     //private User author;
     private String author_id;
-    private User resolver = null;
+    private String resolver;
     private ReimbursementStatus status;
     private ReimbursementType type;
 
@@ -28,7 +28,7 @@ public class NewReimbursementRequest {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
@@ -64,11 +64,11 @@ public class NewReimbursementRequest {
         this.author_id = author;
     }
 
-    public User getResolver() {
+    public String getResolver() {
         return resolver;
     }
 
-    public void setResolver(User resolver) {
+    public void setResolver(String resolver) {
         this.resolver = resolver;
     }
 
@@ -88,11 +88,10 @@ public class NewReimbursementRequest {
         this.type = type;
     }
 
-    public Reimbursement extractReimbursement() { return new Reimbursement(amount, description/*, submitted,author, type*/); }
+    public Reimbursement extractReimbursement() { return new Reimbursement(resolver, amount, description,
+            Timestamp.valueOf(LocalDateTime.now())/*, submitted,author, type*/); }
 
-    //public boolean isAuthorActive(Reimbursement reimbursement) { return reimbursement.getAuthor().isActive(); }
-
-    public NewReimbursementRequest(int amount, String description, String payment_id,
+    public NewReimbursementRequest(Double amount, String description, String payment_id,
                                    User author, User resolver, ReimbursementType type){
 
         this.amount = amount;
@@ -113,7 +112,7 @@ public class NewReimbursementRequest {
                 ", description='" + description + '\'' +
                 ", payment_id='" + payment_id + '\'' +
                 ", author_id='" + author_id + '\'' + //.getId() + '\'' +
-                ", resolver_id='" + resolver.getId() + '\'' +
+                ", resolver_id='" + resolver + '\'' +
                 ", type='" + type.getId() + '\'' +
                 ", status='" + status.getId() + '\'' +
                 ", submitted='" + submitted + '\'' +

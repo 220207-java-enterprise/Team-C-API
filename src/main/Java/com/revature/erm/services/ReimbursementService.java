@@ -35,26 +35,25 @@ public class ReimbursementService {
 
         List<Reimbursement> reimbursements = reimbursementDAO.getAllByAuthorId(author);//new ArrayList<>();
 
-        //UpdateReimbursementRequest updateReimbursementRequest =
         return reimbursements;
     }
 
     public Reimbursement submitNewReimbursment(NewReimbursementRequest newReimbursementRequest) {
 
         Reimbursement newReimbursement = newReimbursementRequest.extractReimbursement();
-
+        System.out.println("is new reimbursement null?: " + newReimbursement==null);
         // TODO encrypt provided password before storing in the database
 
         newReimbursement.setId(UUID.randomUUID().toString());
 
         newReimbursement.setAuthor_id(newReimbursementRequest.getAuthorId());
-        newReimbursement.setResolver_id("ba2fa4f0-35cd-4522-8cb7-a4589f9bebe7");
+        newReimbursement.setResolver_id("5c24b9ca-58ed-41c9-a619-7a19136b21f6");
 
         newReimbursement.setType_id("3");//setType(new ReimbursementType("3", "Other"));
         newReimbursement.setStatus_id("0");//setStatus(new ReimbursementStatus("0", "pending"));
         newReimbursement.setSubmitted(Timestamp.valueOf(LocalDateTime.now()));
         //newUser.setIsActive(true);
-        reimbursementDAO.save(newReimbursement);
+       reimbursementDAO.save(newReimbursement);
 
         return newReimbursement;//newUser;
     }

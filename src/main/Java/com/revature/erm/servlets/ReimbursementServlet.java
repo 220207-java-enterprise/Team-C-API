@@ -13,6 +13,7 @@ import com.revature.erm.dtos.responses.UserResponse;
 import com.revature.erm.models.Reimbursement;
 import com.revature.erm.models.User;
 import com.revature.erm.services.ReimbursementService;
+import com.revature.erm.services.TokenService;
 import com.revature.erm.util.exceptions.InvalidRequestException;
 import com.revature.erm.util.exceptions.ResourceConflictException;
 import org.springframework.stereotype.Component;
@@ -30,40 +31,46 @@ import java.util.List;
 @Component
 public class ReimbursementServlet extends HttpServlet {
 
+    private final TokenService tokenService;
     private final ReimbursementService reimbursementService;
     private final ObjectMapper mapper;
     // doGet: get reimbs by id, by status, by authorid
     // doPost: saving a new reimb
     // doPut: updating a reimb (approve/deny)
 
-    public ReimbursementServlet(ReimbursementService reimbursementService, ObjectMapper mapper) {
+    public ReimbursementServlet(TokenService tokenService, ReimbursementService reimbursementService, ObjectMapper mapper) {
+        this.tokenService = tokenService;
         this.reimbursementService = reimbursementService;
         this.mapper = mapper;
     }
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PrintWriter respWriter = resp.getWriter();
+        Principal requester = tokenService.extractRequesterDetails(req.getHeader("Authorization"));
 
         try {
-
-            HttpSession session = req.getSession(false);
-            if (session == null) {
+            if (requester == null) {
+                System.out.println("Unauthenticated request made to UserServlet#doGet");
                 resp.setStatus(401);
+            }
+            if (!requester.getRole().equals("FManager")) {
+                System.out.println("Unauthorized request made by user: " + requester.getUsername());
+                resp.setStatus(403); // FORBIDDEN
                 return;
-            } else {
-                String sessionUserId = parseSessionUserId(session);//pull id from the session so the authorId can match
+            }
+            String sessionUserId = parseSessionUserId((HttpSession) requester);//pull id from the session so the authorId can match
 
-                ListUserReimbursementsRequest listUserReimbursementsRequest = mapper.readValue(req.getInputStream(), ListUserReimbursementsRequest.class);
-                listUserReimbursementsRequest.setAuthorId(sessionUserId);
+            ListUserReimbursementsRequest listUserReimbursementsRequest = mapper.readValue(req.getInputStream(), ListUserReimbursementsRequest.class);
+            listUserReimbursementsRequest.setAuthorId(sessionUserId);
 
-                List<Reimbursement> reimbs = reimbursementService.getReimbursementByAuthorId(listUserReimbursementsRequest);
-                String payload = mapper.writeValueAsString(reimbs);
-                resp.setContentType("application/json");
-                respWriter.write(payload);
+            List<Reimbursement> reimbursementResponses = reimbursementService.getReimbursementByAuthorId
+                    (listUserReimbursementsRequest);
+            String payload = mapper.writeValueAsString(reimbursementResponses);
+            resp.setContentType("application/json");
+            resp.getWriter().write(payload);
             }
 
-        } catch (InvalidRequestException | DatabindException e) {
+        catch (InvalidRequestException | DatabindException e) {
             e.printStackTrace();
             resp.setStatus(400); // BAD REQUEST
         } catch (ResourceConflictException e) {
@@ -80,26 +87,25 @@ public class ReimbursementServlet extends HttpServlet {
         PrintWriter respWriter = resp.getWriter();
 
         try {
-
-            HttpSession session = req.getSession(false);
-            if (session == null) {
+            Principal ifEmp = tokenService.extractRequesterDetails(req.getHeader("Authorization"));
+            if (ifEmp == null) {
                 resp.setStatus(401);
                 return;
-            } else {
-                String sessionUserId = parseSessionUserId(session);//pull id from the session so the authorId can match
-
-
-                NewReimbursementRequest newReimbursementRequest = mapper.readValue(req.getInputStream(), NewReimbursementRequest.class);
-
-                newReimbursementRequest.setAuthorId(sessionUserId); //set authorId being pulled from the session
-                Reimbursement newReimbursement = reimbursementService.submitNewReimbursment(newReimbursementRequest);
-                resp.setStatus(201); // CREATED
-                resp.setContentType("application/json");
-                String payload = mapper.writeValueAsString(new ResourceCreationResponse(newReimbursement.getId()));
-                respWriter.write(payload);
+            }
+            if(!(ifEmp.getRole().equals("Employee"))){
+                throw new InvalidRequestException("Not an Employee!");
             }
 
-        } catch (InvalidRequestException | DatabindException e) {
+            System.out.println("trying to read json values");
+            NewReimbursementRequest reimbursementRequest = mapper.readValue(req.getInputStream(), NewReimbursementRequest.class);
+            reimbursementRequest.setAuthorId(ifEmp.getId());
+            Reimbursement newReimbursement = reimbursementService.submitNewReimbursment(reimbursementRequest);
+            resp.setStatus(201); // CREATED
+            resp.setContentType("application/json");
+            String payload = mapper.writeValueAsString(new ResourceCreationResponse(newReimbursement.getId()));
+            respWriter.write(payload);
+        }
+        catch (InvalidRequestException | DatabindException e) {
             e.printStackTrace();
             resp.setStatus(400); // BAD REQUEST
         } catch (ResourceConflictException e) {
@@ -116,34 +122,25 @@ public class ReimbursementServlet extends HttpServlet {
         PrintWriter respWriter = resp.getWriter();
 
         try {
-
-            HttpSession session = req.getSession(false);
-            if (session == null) {
+            Principal ifAdmin = tokenService.extractRequesterDetails(req.getHeader("Authorization"));
+            //check if time expired on token = null
+            if(!(ifAdmin.getRole().equals("Finance Manager"))){
+                throw new InvalidRequestException("Not an Finance Manager!");
+            }
+            if (ifAdmin == null) {
                 resp.setStatus(401);
                 return;
-            } else {
-                String sessionUserId = parseSessionUserId(session);//pull id from the session so the authorId can match
-
-                UpdateReimbursementRequest updateReimbursementRequest = mapper.readValue(req.getInputStream(), UpdateReimbursementRequest.class);
-                Reimbursement updateThisReimbursement = reimbursementService.changeReimbursementStatus(updateReimbursementRequest);
-
-                String payload = mapper.writeValueAsString(updateThisReimbursement);
-                resp.setContentType("application/json");
-                respWriter.write(payload);
-
-                /*NewReimbursementRequest newReimbursementRequest = mapper.readValue(req.getInputStream(), NewReimbursementRequest.class);
-                System.out.println("about to launch submitNewReimbursement in ReimbursementServlet.java");
-
-                newReimbursementRequest.setAuthorId(sessionUserId); //set authorId being pulled from the session
-                System.out.println("setAuthorId(sessionUserId) in reimbursementServlet has been called");
-                Reimbursement newReimbursement = reimbursementService.submitNewReimbursment(newReimbursementRequest);
-                resp.setStatus(201); // CREATED
-                resp.setContentType("application/json");
-                String payload = mapper.writeValueAsString(new ResourceCreationResponse(newReimbursement.getId()));
-                respWriter.write(payload);*/
             }
+            UpdateReimbursementRequest updateReimbursement = mapper.readValue(req.getInputStream(), UpdateReimbursementRequest.class);
+            Reimbursement updatedReimburement = reimbursementService.changeReimbursementStatus(updateReimbursement);
 
-        } catch (InvalidRequestException | DatabindException e) {
+            resp.setStatus(201); // Succesful
+            resp.setContentType("application/json");
+            String payload = mapper.writeValueAsString(new ResourceCreationResponse(updatedReimburement.getId()));
+            respWriter.write(payload);
+        }
+
+        catch (InvalidRequestException | DatabindException e) {
             e.printStackTrace();
             resp.setStatus(400); // BAD REQUEST
         } catch (ResourceConflictException e) {

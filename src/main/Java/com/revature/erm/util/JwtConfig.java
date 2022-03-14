@@ -16,11 +16,14 @@ public class JwtConfig {
     private final Key signingKey;
 
     public JwtConfig() {
+        String salt = "don't-hard-code-salt-values"; //Added by Khari
         byte[] saltyBytes = DatatypeConverter.parseBase64Binary(salt);
         signingKey = new SecretKeySpec(saltyBytes, sigAlg.getJcaName());
     }
 
     public int getExpiration() {
+        // number of milliseconds in an hour //Added by Khari
+        int expiration = 60 * 60 * 1000;  //Added by Khari
         return expiration;
     }
 
