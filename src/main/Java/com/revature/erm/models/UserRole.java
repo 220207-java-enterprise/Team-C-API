@@ -1,5 +1,6 @@
 package com.revature.erm.models;
 
+
 public class UserRole {
     private String id;
     private String rolename;
@@ -23,5 +24,8 @@ public class UserRole {
     public UserRole(String id, String rolename){
         this.id = id;
         this.rolename = rolename;
+    }
+    public UserRole(){
+        super();
     }
 }

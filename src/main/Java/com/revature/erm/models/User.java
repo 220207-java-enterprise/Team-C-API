@@ -1,6 +1,4 @@
 package com.revature.erm.models;
-import javax.management.relation.RelationNotification;
-import java.util.UUID;
 
 public class User {
     private String id;
@@ -10,7 +8,7 @@ public class User {
     private String firstName;
     private String lastName;
     private boolean isActive;
-    private String role;
+    private UserRole roleId;
 
     public String getId() {
         return id;
@@ -68,26 +66,19 @@ public class User {
         this.isActive = active;
     }
 
-    public String getRole_id() {
-        return role;
+    public UserRole getRoleId() {
+        return roleId;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoleId(UserRole roleId) {
+        this.roleId = roleId;
     }
 
     public User(){
-        this.id = null;
-        this.username = null;
-        this.email = null;
-        this.password = null;
-        this.firstName = null;
-        this.lastName = null;
-        this.isActive = false;
-        this.role = null;
+        super();
     }
     public User(String id, String username, String email, String password,
-                String firstName, String lastName, boolean isActive, String role) {
+                String firstName, String lastName, boolean isActive, UserRole role) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -95,17 +86,17 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.isActive = isActive;
-        this.role = role;
+        this.roleId = role;
 
         //System.out.println(this.id);
     }
 
-    public User(String firstName, String lastName, String email, String username, String password, String role_id) {
+    public User(String firstName, String lastName, String email, String username, String password, UserRole role_id) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.role = role_id;
+        this.roleId = role_id;
     }
 }

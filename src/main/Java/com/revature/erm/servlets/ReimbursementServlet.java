@@ -15,6 +15,7 @@ import com.revature.erm.models.User;
 import com.revature.erm.services.ReimbursementService;
 import com.revature.erm.util.exceptions.InvalidRequestException;
 import com.revature.erm.util.exceptions.ResourceConflictException;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,6 +27,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ReimbursementServlet extends HttpServlet {
 
     private final ReimbursementService reimbursementService;

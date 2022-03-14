@@ -4,11 +4,13 @@ import com.revature.erm.models.Reimbursement;
 import com.revature.erm.util.ConnectionFactory;
 import com.revature.erm.util.exceptions.DataSourceException;
 import com.revature.erm.util.exceptions.ResourcePersistenceException;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
+@Repository
 public class ReimbursementDAO implements CrudDAO<Reimbursement> {
 
     /*private final String rootSelect = "SELECT " +

@@ -1,6 +1,7 @@
 package com.revature.erm.dtos.requests;
 
 import com.revature.erm.models.User;
+import com.revature.erm.models.UserRole;
 
 public class NewUserRequest {
 
@@ -9,14 +10,14 @@ public class NewUserRequest {
     private String email;
     private String username;
     private String password;
-    private String role_id;
+    private UserRole role_id;
     //private Role role
 
     public NewUserRequest() {
         super();
     }
 
-    public NewUserRequest(String firstName, String lastName, String email, String username, String password, String role_id) {
+    public NewUserRequest(String firstName, String lastName, String email, String username, String password, UserRole role_id) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -65,11 +66,11 @@ public class NewUserRequest {
         this.password = password;
     }
 
-    public String getRole_id() {
+    public UserRole getRole_id() {
         return role_id;
     }
 
-    public void setRole_id(String role_id) {
+    public void setRole_id(UserRole role_id) {
         this.role_id = role_id;
     }
 
