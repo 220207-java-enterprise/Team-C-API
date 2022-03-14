@@ -10,7 +10,7 @@ public class Reimbursement {
     @Id
     private String id;
     @Column (name = "amount", nullable = false, columnDefinition = "numeric (6,2)")
-    private int amount;
+    private Double amount;
     @Column (name = "submitted", columnDefinition = "timestamp default current_timestamp")
     private Timestamp submitted;
     @Column (name = "resolved", columnDefinition = "timestamp default current_timestamp")
@@ -38,6 +38,13 @@ public class Reimbursement {
 
     public Reimbursement() { super(); }
 
+    public Reimbursement(String resolver, Double amount, String description, Timestamp submitted) {
+        this.amount = amount;
+        this.submitted = submitted;
+        this.description = description;
+        this.resolver_id = resolver;
+    }
+
     public String getId() {
         return id;
     }
@@ -46,11 +53,11 @@ public class Reimbursement {
         this.id = id;
     }
 
-    public int getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
@@ -89,15 +96,12 @@ public class Reimbursement {
     /*public User getAuthor() {
         return author;
     }
-
     public void setAuthor(User author) {
         this.author = author;
     }
-
     public User getResolver() {
         return resolver;
     }
-
     public void setResolver(User resolver) {
         this.resolver = resolver;
     }*/
@@ -121,15 +125,12 @@ public class Reimbursement {
     /*public ReimbursementStatus getStatus() {
         return status;
     }
-
     public void setStatus(ReimbursementStatus status) {
         this.status = status;
     }
-
     public ReimbursementType getType() {
         return type;
     }
-
     public void setType(ReimbursementType type) {
         this.type = type;
     }*/
@@ -150,7 +151,7 @@ public class Reimbursement {
         this.type_id = type_id;
     }
 
-    Reimbursement(String id, int amount, Timestamp submitted, Timestamp resolved, String description,
+    Reimbursement(String id, Double amount, Timestamp submitted, Timestamp resolved, String description,
                   String payment_id, String author, User resolver, String status, String type) {
         //this.id = id;
         this.amount = amount;
@@ -164,7 +165,7 @@ public class Reimbursement {
         this.type_id = type;
 
     }
-    public Reimbursement(int amount, String description/*, Timestamp submitted, User author, ReimbursementType type*/) {
+    public Reimbursement(Double amount, String description/*, Timestamp submitted, User author, ReimbursementType type*/) {
         this.amount = amount;
         //this.submitted = submitted;
         this.description = description;
