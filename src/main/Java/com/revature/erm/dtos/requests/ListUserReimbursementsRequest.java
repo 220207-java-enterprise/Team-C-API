@@ -1,14 +1,16 @@
 package com.revature.erm.dtos.requests;
 
+import com.revature.erm.models.User;
+
 public class ListUserReimbursementsRequest {
 
-    private String author_id;
+    private User author_id;
 
-    public String getAuthorId() {
+    public User getAuthorId() {
         return author_id;
     }
 
-    public void setAuthorId(String author_id) {
+    public void setAuthorId(User author_id) {
         this.author_id = author_id;
     }
 

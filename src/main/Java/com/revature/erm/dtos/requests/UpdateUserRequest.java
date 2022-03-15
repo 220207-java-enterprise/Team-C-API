@@ -1,6 +1,5 @@
 package com.revature.erm.dtos.requests;
 
-import com.revature.erm.daos.UserDAO;
 import com.revature.erm.models.User;
 import com.revature.erm.models.UserRole;
 

@@ -6,6 +6,7 @@ import com.revature.erm.dtos.requests.NewReimbursementRequest;
 import com.revature.erm.dtos.requests.UpdateReimbursementRequest;
 import com.revature.erm.dtos.responses.ResourceCreationResponse;
 import com.revature.erm.models.*;
+import com.revature.erm.repos.ReimbursementRepos;
 import com.revature.erm.util.exceptions.InvalidRequestException;
 import com.revature.erm.util.exceptions.ResourceConflictException;
 import org.postgresql.util.ReaderInputStream;
@@ -20,10 +21,10 @@ import java.util.UUID;
 @Service
 public class ReimbursementService {
 
-    private ReimbursementDAO reimbursementDAO;
+    private ReimbursementRepos reimbursementRepos;
 
 
-    public ReimbursementService(ReimbursementDAO reimbursementDAO) {this.reimbursementDAO = reimbursementDAO;}
+    public ReimbursementService(ReimbursementRepos reimbursementRepos) {this.reimbursementRepos = reimbursementRepos;}
 
     public List<Reimbursement> getReimbursementByStatusId(String statusId){
         return null;
@@ -31,9 +32,9 @@ public class ReimbursementService {
 
     public List<Reimbursement> getReimbursementByAuthorId(ListUserReimbursementsRequest lrur) { //String authorId)
 
-        String author = lrur.getAuthorId();
+        User author = lrur.getAuthorId();
 
-        List<Reimbursement> reimbursements = reimbursementDAO.getAllByAuthorId(author);//new ArrayList<>();
+        List<Reimbursement> reimbursements = reimbursementRepos.getReimbursementByAuthor_Id(author);//new ArrayList<>();
 
         return reimbursements;
     }
@@ -53,7 +54,7 @@ public class ReimbursementService {
         newReimbursement.setStatus_id("0");//setStatus(new ReimbursementStatus("0", "pending"));
         newReimbursement.setSubmitted(Timestamp.valueOf(LocalDateTime.now()));
         //newUser.setIsActive(true);
-       reimbursementDAO.save(newReimbursement);
+        reimbursementRepos.save(newReimbursement);
 
         return newReimbursement;//newUser;
     }
@@ -61,10 +62,11 @@ public class ReimbursementService {
     public Reimbursement changeReimbursementStatus(UpdateReimbursementRequest updateReimbursementRequest) {
 
         Reimbursement updateThisReimbursement = updateReimbursementRequest.extractReimbursement();
-        reimbursementDAO.update(updateThisReimbursement);
+        //TODO create Update in reimbursementRepos
+        reimbursementRepos.update(updateThisReimbursement);
 
-
-        return reimbursementDAO.getById(updateThisReimbursement.getId());
+        //TODO FIXME
+        return reimbursementRepos.getReimbursementsByreimbId(updateThisReimbursement.getId());
     }
 
     public Boolean approveReimbursement(String reimbId) {

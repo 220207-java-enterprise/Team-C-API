@@ -6,6 +6,7 @@ import com.revature.erm.dtos.requests.NewUserRequest;
 import com.revature.erm.dtos.requests.UpdateUserRequest;
 import com.revature.erm.dtos.responses.UserResponse;
 import com.revature.erm.models.User;
+import com.revature.erm.repos.UserRepos;
 import com.revature.erm.util.exceptions.AuthenticationException;
 import com.revature.erm.util.exceptions.InvalidRequestException;
 import com.revature.erm.util.exceptions.ResourceConflictException;
@@ -25,7 +26,7 @@ public class UserService {
      in order to set the private field
      */
     // @Autowired // field injection
-    private UserDAO userDAO; // a dependency of UserService
+    private UserRepos userRepos; // a dependency of UserService
 
     /* Constructor injection: a little less readable, can't change the
      * dependency later, but it makes the most sense logically with
@@ -34,8 +35,8 @@ public class UserService {
      * if you only have one constructor, you can leave out the Autowired annotation
      */
     //@Autowired
-    public UserService(UserDAO userDAO) {
-        this.userDAO = userDAO;
+    public UserService(UserRepos userRepos) {
+        this.userRepos = userRepos;
     }
 
     /* setter injection: less readable, but allows you to change
@@ -57,7 +58,8 @@ public class UserService {
 //        return userResponses;
 
         // Java 8+ mapping logic (with Streams)
-        return userDAO.getAll()
+        //TODO needs new logic
+        return userRepos.findAll()
                 .stream()
                 .map(UserResponse::new) // intermediate operation
                 .collect(Collectors.toList()); // terminal operation
@@ -85,13 +87,15 @@ public class UserService {
 
         newUser.setId(UUID.randomUUID().toString());
         newUser.setIsActive(false);
-        userDAO.save(newUser);
+        userRepos.save(newUser);
 
         return newUser;
     }
     public User updatedUser(UpdateUserRequest updateRequest) {
         User updatedUser = updateRequest.extractUser();
-        userDAO.update(updatedUser);
+
+        //TODO needs update to userRepos
+        userRepos.update(updatedUser);
         return updatedUser;
     }
     public User login(LoginRequest loginRequest) {
@@ -105,7 +109,7 @@ public class UserService {
 
         // TODO encrypt provided password (assumes password encryption is in place) to see if it matches what is in the DB
 
-        User authUser = userDAO.findUserByUsernameAndPassword(username, password);
+        User authUser = userRepos.findUserByUsernameAndPassword(username, password);
 
         if (authUser == null) {
             throw new AuthenticationException();
@@ -154,11 +158,13 @@ public class UserService {
 
     public boolean isUsernameAvailable(String username) {
         if (username == null || !isUsernameValid(username)) return false;
-        return userDAO.findUserByUsername(username) == null;
+        //TODO make findUserByUsername
+        return userRepos.findUserByUsername(username) == null;
     }
 
     public boolean isEmailAvailable(String email) {
         if (email == null || !isEmailValid(email)) return false;
-        return userDAO.findUserByEmail(email) == null;
+        //TODO make findUserByEmail
+        return userRepos.findUserByEmail(email) == null;
     }
 }
