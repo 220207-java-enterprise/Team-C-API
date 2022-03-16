@@ -10,9 +10,6 @@
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
-    <listener>
-        <listener-class>com.revature.erm.util.ContextLoaderListener</listener-class>
-    </listener>
 
    <!-- <servlet>
         <servlet-name>TestServlet</servlet-name>

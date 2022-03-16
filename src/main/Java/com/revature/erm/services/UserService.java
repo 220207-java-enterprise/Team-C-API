@@ -1,10 +1,8 @@
 package com.revature.erm.services;
 
-import com.revature.erm.daos.UserDAO;
 import com.revature.erm.dtos.requests.LoginRequest;
 import com.revature.erm.dtos.requests.NewUserRequest;
 import com.revature.erm.dtos.requests.UpdateUserRequest;
-import com.revature.erm.dtos.responses.UserResponse;
 import com.revature.erm.models.User;
 import com.revature.erm.repos.UserRepos;
 import com.revature.erm.util.exceptions.AuthenticationException;
@@ -13,10 +11,7 @@ import com.revature.erm.util.exceptions.ResourceConflictException;
 
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -47,7 +42,7 @@ public class UserService {
 //    	this.userDAO = userDao;
 //    }
 
-    public List<UserResponse> getAllUsers() {
+    public Iterable<User> getAllUsers() {
 
         // Pre-Java 8 mapping logic (without Streams)
 //        List<AppUser> users = userDAO.getAll();
@@ -59,10 +54,10 @@ public class UserService {
 
         // Java 8+ mapping logic (with Streams)
         //TODO needs new logic
-        return userRepos.findAll()
-                .stream()
-                .map(UserResponse::new) // intermediate operation
-                .collect(Collectors.toList()); // terminal operation
+        return userRepos.findAll();
+//                .stream()
+//                .map(UserResponse::new) // intermediate operation
+//                .collect(Collectors.toList()); // terminal operation
     }
 
     public User register(NewUserRequest newUserRequest) {

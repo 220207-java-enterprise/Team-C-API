@@ -1,6 +1,5 @@
 package com.revature.erm.services;
 
-import com.revature.erm.daos.ReimbursementDAO;
 import com.revature.erm.dtos.requests.ListUserReimbursementsRequest;
 import com.revature.erm.dtos.requests.NewReimbursementRequest;
 import com.revature.erm.dtos.requests.UpdateReimbursementRequest;
@@ -59,7 +58,9 @@ public class ReimbursementService {
         return newReimbursement;//newUser;
     }
 
-    public Reimbursement changeReimbursementStatus(UpdateReimbursementRequest updateReimbursementRequest) {
+
+
+    public List<Reimbursement> changeReimbursementStatus(UpdateReimbursementRequest updateReimbursementRequest) {
 
         Reimbursement updateThisReimbursement = updateReimbursementRequest.extractReimbursement();
         //TODO create Update in reimbursementRepos
