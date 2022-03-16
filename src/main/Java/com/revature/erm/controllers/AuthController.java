@@ -17,27 +17,27 @@ import java.util.HashMap;
 @RequestMapping("/Auth")
 public class AuthController {
 
-    private TokenService tokenService;
-    private UserService userService;
-
-    @Autowired
-    public AuthController(TokenService tokenService, UserService userService) {
-        this.tokenService = tokenService;
-        this.userService = userService;
-    }
-
-    @PostMapping(value = "login", produces = "application/json", consumes = "application/json")
-    public void login(@RequestBody LoginRequest credentials, HttpServletResponse resp) {
-
-        Principal principal = new Principal(userService.login(credentials));
-
-        String token = tokenService.generateToken(principal);
-
-        if (credentials.getUsername().equals("test") && credentials.getPassword().equals("p4$$W0RD")) {
-            resp.setHeader("Authorization", token);
-        } else {
-            resp.setStatus(401);
-        }
-    }
+//    private TokenService tokenService;
+//    private UserService userService;
+//
+//    @Autowired
+//    public AuthController(TokenService tokenService, UserService userService) {
+//        this.tokenService = tokenService;
+//        this.userService = userService;
+//    }
+//
+//    @PostMapping(value = "login", produces = "application/json", consumes = "application/json")
+//    public void login(@RequestBody LoginRequest credentials, HttpServletResponse resp) {
+//
+//        Principal principal = new Principal(userService.login(credentials));
+//
+//        String token = tokenService.generateToken(principal);
+//
+//        if (credentials.getUsername().equals("test") && credentials.getPassword().equals("p4$$W0RD")) {
+//            resp.setHeader("Authorization", token);
+//        } else {
+//            resp.setStatus(401);
+//        }
+//    }
 
 }

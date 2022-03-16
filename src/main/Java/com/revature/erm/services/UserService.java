@@ -9,6 +9,7 @@ import com.revature.erm.util.exceptions.AuthenticationException;
 import com.revature.erm.util.exceptions.InvalidRequestException;
 import com.revature.erm.util.exceptions.ResourceConflictException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -29,7 +30,8 @@ public class UserService {
      *
      * if you only have one constructor, you can leave out the Autowired annotation
      */
-    //@Autowired
+
+    @Autowired
     public UserService(UserRepos userRepos) {
         this.userRepos = userRepos;
     }

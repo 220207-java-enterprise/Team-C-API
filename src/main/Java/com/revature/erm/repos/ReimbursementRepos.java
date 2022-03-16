@@ -11,9 +11,11 @@ import java.util.List;
 
 @Repository
 public interface ReimbursementRepos extends CrudRepository<Reimbursement, String> {
+
+    @Query("from ers_reimbursements r where r.reimb_id = ?1")
     List<Reimbursement> getReimbursementsByreimbId(String reimb_id);
 
-    @Query("from Reimbursement r where r.author_id = ?1")
+    @Query("from ers_reimbursements r where r.author_id = ?1")
     List<Reimbursement> getReimbursementByAuthor_Id(User author_id);
 
     /*@Query(
@@ -23,6 +25,6 @@ public interface ReimbursementRepos extends CrudRepository<Reimbursement, String
     List<Reimbursement> findReimbursementByMaterial(String material);*/
 
     @Modifying
-    @Query("update ers_reimbursments r set r.status_id = ?, r.resolved = ?, where r.reimb_id = ?")
+    @Query("update ers_reimbursements r set r.status_id = ?1, r.resolved = ?2, where r.reimb_id = ?3")
     List<Reimbursement> update(Reimbursement updatedReimbursement);
 }

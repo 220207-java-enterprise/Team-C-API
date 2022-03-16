@@ -1,41 +1,53 @@
 package com.revature.erm.models;
+
 import javax.persistence.*;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
+
 @Entity
 @Table (name = "ers_reimbursements")
 public class Reimbursement {
+
     @Id
     private String id;
+
     @Column (name = "amount", nullable = false, columnDefinition = "numeric (6,2)")
     private Double amount;
+
     @Column (name = "submitted", columnDefinition = "timestamp default current_timestamp")
     private Timestamp submitted;
+
     @Column (name = "resolved", columnDefinition = "timestamp default current_timestamp")
     private Timestamp resolved = null;
+
     @Column (name = "description", nullable = false)
     private String description;
+
     @Column (name = "payment_id")
     private String payment_id;
+
     /*private User author;
     private User resolver = null;*/
     //TODO @OneToOne or @ManyToOne on com.revature.erm.models.Reimbursement.author_id references an unknown entity
-    @OneToOne
+    @ManyToOne
     @JoinColumn (name = "author_id", nullable = false)
     private User author_id;
-    @OneToOne
+
+    @ManyToOne
     @JoinColumn (name = "resolver_id", nullable = false)
     private User resolver_id;
+
     //private ReimbursementStatus status;
     //private ReimbursementType type;
     @OneToOne
     @JoinColumn(name = "status_id", nullable = false)
-    private String status_id;
+    private ReimbursementStatus status_id;
+
     @OneToOne
     @JoinColumn(name = "type_id", nullable = false)
-    private String type_id;
+    private ReimbursementType type_id;
 
     public Reimbursement() { super(); }
 
@@ -136,24 +148,24 @@ public class Reimbursement {
         this.type = type;
     }*/
 
-    public String getStatus_id() {
+    public ReimbursementStatus getStatus_id() {
         return status_id;
     }
 
-    public void setStatus_id(String status_id) {
+    public void setStatus_id(ReimbursementStatus status_id) {
         this.status_id = status_id;
     }
 
-    public String getType_id() {
+    public ReimbursementType getType_id() {
         return type_id;
     }
 
-    public void setType_id(String type_id) {
+    public void setType_id(ReimbursementType type_id) {
         this.type_id = type_id;
     }
 
     Reimbursement(String id, Double amount, Timestamp submitted, Timestamp resolved, String description,
-                  String payment_id, User author, User resolver, String status, String type) {
+                  String payment_id, User author, User resolver, ReimbursementStatus status, ReimbursementType type) {
         //this.id = id;
         this.amount = amount;
         this.submitted = submitted;
@@ -174,6 +186,6 @@ public class Reimbursement {
         //this.type = type;
     }
 
-    public Reimbursement(String id, String status_id){ this.id = id; this.status_id = status_id; }
+    public Reimbursement(String id, ReimbursementStatus status_id){ this.id = id; this.status_id = status_id; }
 
 }

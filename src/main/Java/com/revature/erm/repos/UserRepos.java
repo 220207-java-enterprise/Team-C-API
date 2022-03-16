@@ -12,8 +12,8 @@ import java.util.List;
 public interface UserRepos extends CrudRepository <User, String> {
 
     @Modifying
-    @Query("update ers_users u set u.username = ?, u.email = ?, u.password = ?, u.first_name = ?, " +
-            "u.last_name = ?, u.is_active = ?, u.role_id = ? where u.user_id = ?")
+    @Query("update ers_users u set u.username = ?1, u.email = ?2, u.password = ?3, u.first_name = ?4, " +
+            "u.last_name = ?5, u.is_active = ?6, u.role_id = ?7 where u.user_id = ?8")
     List<User> update(User updatedUser);
 
     @Query
