@@ -4,7 +4,7 @@ import com.revature.erm.dtos.requests.LoginRequest;
 import com.revature.erm.dtos.requests.NewUserRequest;
 import com.revature.erm.dtos.requests.UpdateUserRequest;
 import com.revature.erm.models.User;
-import com.revature.erm.repos.UserRepository;
+import com.revature.erm.repos.UserRepos;
 import com.revature.erm.util.exceptions.AuthenticationException;
 import com.revature.erm.util.exceptions.InvalidRequestException;
 import com.revature.erm.util.exceptions.ResourceConflictException;
@@ -21,7 +21,7 @@ public class UserService {
      in order to set the private field
      */
     // @Autowired // field injection
-    private UserRepository userRepo; // a dependency of UserService
+    private UserRepos userRepo; // a dependency of UserService
 
     /* Constructor injection: a little less readable, can't change the
      * dependency later, but it makes the most sense logically with
@@ -30,7 +30,7 @@ public class UserService {
      * if you only have one constructor, you can leave out the Autowired annotation
      */
     //@Autowired
-    public UserService(UserRepository userRepo) {
+    public UserService(UserRepos userRepo) {
         this.userRepo = userRepo;
     }
 

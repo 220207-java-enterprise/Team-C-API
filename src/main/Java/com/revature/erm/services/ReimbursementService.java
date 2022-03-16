@@ -4,7 +4,7 @@ import com.revature.erm.dtos.requests.ListUserReimbursementsRequest;
 import com.revature.erm.dtos.requests.NewReimbursementRequest;
 import com.revature.erm.dtos.requests.UpdateReimbursementRequest;
 import com.revature.erm.models.*;
-import com.revature.erm.repos.ReimbursementRepository;
+import com.revature.erm.repos.ReimbursementRepos;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -15,10 +15,10 @@ import java.util.UUID;
 @Service
 public class ReimbursementService {
 
-    private ReimbursementRepository reimbursementRepo;
+    private ReimbursementRepos reimbursementRepo;
 
 
-    public ReimbursementService(ReimbursementRepository reimbursementRepo) {this.reimbursementRepo = reimbursementRepo;}
+    public ReimbursementService(ReimbursementRepos reimbursementRepo) {this.reimbursementRepo = reimbursementRepo;}
 
     public List<Reimbursement> getReimbursementByStatusId(String statusId){
         return null;

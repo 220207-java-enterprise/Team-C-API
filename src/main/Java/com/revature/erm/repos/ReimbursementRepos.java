@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ReimbursementRepository extends CrudRepository<Reimbursement, String> {
+public interface ReimbursementRepos extends CrudRepository<Reimbursement, String> {
     List<Reimbursement> getReimbursementsByreimbId(String reimb_id);
 
     @Query("from Reimbursement r where r.author_id = ?1")

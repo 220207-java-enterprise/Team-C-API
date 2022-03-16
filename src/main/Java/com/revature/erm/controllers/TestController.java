@@ -2,7 +2,7 @@ package com.revature.erm.controllers;
 
 import com.revature.erm.dtos.responses.ResourceCreationResponse;
 import com.revature.erm.models.User;
-import com.revature.erm.repos.UserRepository;
+import com.revature.erm.repos.UserRepos;
 import com.revature.erm.util.security.Secured;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
@@ -20,10 +19,10 @@ import java.util.UUID;
 @RequestMapping("/test")
 public class TestController {
 
-    private UserRepository userRepo;
+    private UserRepos userRepo;
 
     @Autowired
-    public TestController(UserRepository userRepo) {
+    public TestController(UserRepos userRepo) {
         this.userRepo = userRepo;
     }
 
