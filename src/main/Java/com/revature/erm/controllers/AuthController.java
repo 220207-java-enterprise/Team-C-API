@@ -1,11 +1,14 @@
 package com.revature.erm.controllers;
 
+import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.erm.dtos.requests.LoginRequest;
 import com.revature.erm.dtos.responses.Principal;
 import com.revature.erm.models.User;
 import com.revature.erm.services.TokenService;
 import com.revature.erm.services.UserService;
+import com.revature.erm.util.exceptions.AuthenticationException;
+import com.revature.erm.util.exceptions.InvalidRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,31 +16,45 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 
+@CrossOrigin
 @RestController
-@RequestMapping("/Auth")
+@RequestMapping("/auth")
 public class AuthController {
 
-//    private TokenService tokenService;
-//    private UserService userService;
-//
-//    @Autowired
-//    public AuthController(TokenService tokenService, UserService userService) {
-//        this.tokenService = tokenService;
-//        this.userService = userService;
-//    }
-//
-//    @PostMapping(value = "login", produces = "application/json", consumes = "application/json")
-//    public void login(@RequestBody LoginRequest credentials, HttpServletResponse resp) {
-//
-//        Principal principal = new Principal(userService.login(credentials));
-//
-//        String token = tokenService.generateToken(principal);
-//
-//        if (credentials.getUsername().equals("test") && credentials.getPassword().equals("p4$$W0RD")) {
-//            resp.setHeader("Authorization", token);
-//        } else {
-//            resp.setStatus(401);
-//        }
-//    }
+    private final UserService userService;
+
+
+    @Autowired
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    public Principal authenticate(@RequestBody LoginRequest loginRequest) {
+        return new Principal(userService.login(loginRequest));
+    }
+
+    // TODO centralize exception handlers using an aspect
+
+    @ExceptionHandler(value = {
+            InvalidRequestException.class,
+            JacksonException.class
+    })
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void handleBadRequests(Exception e) {
+
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public void handleFailedAuthentication(AuthenticationException e) {
+
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public void handleServerError(Throwable t) {
+        t.printStackTrace();
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.revature.erm.models;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table (name = "ers_users"  )
@@ -27,9 +28,33 @@ public class User {
     @Column(columnDefinition = "boolean default false")
     private boolean isActive;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "role_id")
     private UserRole roleId;
+
+    public User(){
+        super();
+    }
+
+    public User(String id, String username, String email, String password, String firstName,
+                String lastName, boolean isActive, UserRole roleId) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.isActive = isActive;
+        this.roleId = roleId;
+    }
+
+    public User(String firstName, String lastName, String email, String username, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+    }
 
     public String getId() {
         return id;
@@ -83,8 +108,8 @@ public class User {
         return isActive;
     }
 
-    public void setIsActive(boolean active) {
-        this.isActive = active;
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public UserRole getRoleId() {
@@ -95,29 +120,37 @@ public class User {
         this.roleId = roleId;
     }
 
-    public User(){
-        super();
-    }
-    public User(String id, String username, String email, String password,
-                String firstName, String lastName, boolean isActive, UserRole role) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.isActive = isActive;
-        this.roleId = role;
-
-        //System.out.println(this.id);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return isActive == user.isActive
+                && Objects.equals(id, user.id)
+                && Objects.equals(username, user.username)
+                && Objects.equals(email, user.email)
+                && Objects.equals(password, user.password)
+                && Objects.equals(firstName, user.firstName)
+                && Objects.equals(lastName, user.lastName)
+                && Objects.equals(roleId, user.roleId);
     }
 
-    public User(String firstName, String lastName, String email, String username, String password, UserRole role_id) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.roleId = role_id;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, email, password, firstName, lastName, isActive, roleId);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", isActive=" + isActive +
+                ", roleId=" + roleId +
+                '}';
     }
 }

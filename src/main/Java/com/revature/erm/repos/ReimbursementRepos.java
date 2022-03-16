@@ -12,19 +12,19 @@ import java.util.List;
 @Repository
 public interface ReimbursementRepos extends CrudRepository<Reimbursement, String> {
 
-    @Query("from ers_reimbursements r where r.reimb_id = ?1")
-    List<Reimbursement> getReimbursementsByreimbId(String reimb_id);
-
-    @Query("from ers_reimbursements r where r.author_id = ?1")
-    List<Reimbursement> getReimbursementByAuthor_Id(String author_id);
-
-    /*@Query(
-            value = "SELECT * from reimbursement where material = ?1",
-            nativeQuery = true
-    )
-    List<Reimbursement> findReimbursementByMaterial(String material);*/
-
-    @Modifying
-    @Query("update ers_reimbursements r set r.status_id = ?1, r.resolved = ?2, where r.reimb_id = ?3")
-    List<Reimbursement> update(Reimbursement updatedReimbursement);
+//    @Query("select er from ers_reimbursements er where er.reimb_id = ?1")
+//    List<Reimbursement> getReimbursementsByreimbId(String reimb_id);
+//
+//    @Query("select er from ers_reimbursements er where er.author_id = ?1")
+//    List<Reimbursement> getReimbursementByAuthor_Id(User author_id);
+//
+//    /*@Query(
+//            value = "SELECT * from reimbursement where material = ?1",
+//            nativeQuery = true
+//    )
+//    List<Reimbursement> findReimbursementByMaterial(String material);*/
+//
+//    @Modifying
+//    @Query("update ers_reimbursements r set r.status_id = ?1, r.resolved = ?2, where r.reimb_id = ?3")
+//    List<Reimbursement> update(Reimbursement updatedReimbursement);
 }

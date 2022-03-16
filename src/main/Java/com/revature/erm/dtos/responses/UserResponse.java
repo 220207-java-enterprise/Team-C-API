@@ -19,7 +19,7 @@ public class UserResponse {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.username = user.getUsername();
-        this.role = user.getRoleId().getId();
+        this.role = user.getRoleId().getRoleName();
     }
 
     public String getId() {
@@ -62,4 +62,3 @@ public class UserResponse {
         this.role = role;
     }
 }
-

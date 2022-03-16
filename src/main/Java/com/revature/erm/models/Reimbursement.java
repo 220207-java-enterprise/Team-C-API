@@ -11,7 +11,7 @@ import java.util.UUID;
 public class Reimbursement {
 
     @Id
-    private String id;
+    private String reimb_id;
 
     @Column (name = "amount", nullable = false, columnDefinition = "numeric (6,2)")
     private Double amount;
@@ -59,11 +59,11 @@ public class Reimbursement {
     }
 
     public String getId() {
-        return id;
+        return reimb_id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.reimb_id = reimb_id;
     }
 
     public Double getAmount() {
@@ -186,6 +186,6 @@ public class Reimbursement {
         //this.type = type;
     }
 
-    public Reimbursement(String id, ReimbursementStatus status_id){ this.id = id; this.status_id = status_id; }
+    public Reimbursement(String reimb_id, ReimbursementStatus status_id){ this.reimb_id = reimb_id; this.status_id = status_id; }
 
 }

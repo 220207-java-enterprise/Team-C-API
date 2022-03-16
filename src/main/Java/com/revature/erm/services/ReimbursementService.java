@@ -29,13 +29,13 @@ public class ReimbursementService {
         return null;
     }
 
-    public List<Reimbursement> getReimbursementByAuthorId(ListUserReimbursementsRequest lrur) { //String authorId)
-        User author = lrur.getAuthorId();
-
-        List<Reimbursement> reimbursements = reimbursementRepos.getReimbursementByAuthor_Id(author.getId());//new ArrayList<>();
-
-        return reimbursements;
-    }
+//    public List<Reimbursement> getReimbursementByAuthorId(ListUserReimbursementsRequest lrur) { //String authorId)
+//        User author = lrur.getAuthorId();
+//
+//        List<Reimbursement> reimbursements = reimbursementRepos.getReimbursementByAuthor_Id(author);//new ArrayList<>();
+//
+//        return reimbursements;
+//    }
 
     public Reimbursement submitNewReimbursement(NewReimbursementRequest newReimbursementRequest) {
 
@@ -59,14 +59,14 @@ public class ReimbursementService {
 
 
 
-    public List<Reimbursement> changeReimbursementStatus(UpdateReimbursementRequest updateReimbursementRequest) {
-
-        Reimbursement updateThisReimbursement = updateReimbursementRequest.extractReimbursement();
-
-        reimbursementRepos.update(updateThisReimbursement);
-
-        return reimbursementRepos.getReimbursementsByreimbId(updateThisReimbursement.getId());
-    }
+//    public List<Reimbursement> changeReimbursementStatus(UpdateReimbursementRequest updateReimbursementRequest) {
+//
+//        Reimbursement updateThisReimbursement = updateReimbursementRequest.extractReimbursement();
+//
+//        reimbursementRepos.update(updateThisReimbursement);
+//
+//        return reimbursementRepos.getReimbursementsByreimbId(updateThisReimbursement.getId());
+//    }
 
     public Boolean approveReimbursement(String reimbId) {
         //Reimbursement newReimbursement = newReimbursementRequest.extractReimbursement();
