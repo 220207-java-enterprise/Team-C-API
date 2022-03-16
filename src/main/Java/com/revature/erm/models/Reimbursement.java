@@ -21,6 +21,7 @@ public class Reimbursement {
     private String payment_id;
     /*private User author;
     private User resolver = null;*/
+    //TODO @OneToOne or @ManyToOne on com.revature.erm.models.Reimbursement.author_id references an unknown entity
     @OneToOne
     @JoinColumn (name = "author_id", nullable = false)
     private String author_id;
