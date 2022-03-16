@@ -10,6 +10,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 @SpringBootApplication
 public class FoundationsDriver {
+
     public static void main(String[] args) {
         SpringApplication.run(FoundationsDriver.class);
     }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserRepos extends CrudRepository <User, String> {
+public interface UserRepository extends CrudRepository <User, String> {
 
     @Modifying
     @Query("update ers_users u set u.username = ?, u.email = ?, u.password = ?, u.first_name = ?, " +

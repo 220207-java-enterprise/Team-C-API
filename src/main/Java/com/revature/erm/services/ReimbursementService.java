@@ -3,27 +3,22 @@ package com.revature.erm.services;
 import com.revature.erm.dtos.requests.ListUserReimbursementsRequest;
 import com.revature.erm.dtos.requests.NewReimbursementRequest;
 import com.revature.erm.dtos.requests.UpdateReimbursementRequest;
-import com.revature.erm.dtos.responses.ResourceCreationResponse;
 import com.revature.erm.models.*;
-import com.revature.erm.repos.ReimbursementRepos;
-import com.revature.erm.util.exceptions.InvalidRequestException;
-import com.revature.erm.util.exceptions.ResourceConflictException;
-import org.postgresql.util.ReaderInputStream;
+import com.revature.erm.repos.ReimbursementRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class ReimbursementService {
 
-    private ReimbursementRepos reimbursementRepos;
+    private ReimbursementRepository reimbursementRepo;
 
 
-    public ReimbursementService(ReimbursementRepos reimbursementRepos) {this.reimbursementRepos = reimbursementRepos;}
+    public ReimbursementService(ReimbursementRepository reimbursementRepo) {this.reimbursementRepo = reimbursementRepo;}
 
     public List<Reimbursement> getReimbursementByStatusId(String statusId){
         return null;
@@ -33,7 +28,7 @@ public class ReimbursementService {
 
         User author = lrur.getAuthorId();
 
-        List<Reimbursement> reimbursements = reimbursementRepos.getReimbursementByAuthor_Id(author);//new ArrayList<>();
+        List<Reimbursement> reimbursements = reimbursementRepo.getReimbursementByAuthor_Id(author);//new ArrayList<>();
 
         return reimbursements;
     }
@@ -53,7 +48,7 @@ public class ReimbursementService {
         newReimbursement.setStatus_id("0");//setStatus(new ReimbursementStatus("0", "pending"));
         newReimbursement.setSubmitted(Timestamp.valueOf(LocalDateTime.now()));
         //newUser.setIsActive(true);
-        reimbursementRepos.save(newReimbursement);
+        reimbursementRepo.save(newReimbursement);
 
         return newReimbursement;//newUser;
     }
@@ -63,11 +58,11 @@ public class ReimbursementService {
     public List<Reimbursement> changeReimbursementStatus(UpdateReimbursementRequest updateReimbursementRequest) {
 
         Reimbursement updateThisReimbursement = updateReimbursementRequest.extractReimbursement();
-        //TODO create Update in reimbursementRepos
-        reimbursementRepos.update(updateThisReimbursement);
+        //TODO create Update in reimbursementRepository
+        reimbursementRepo.update(updateThisReimbursement);
 
         //TODO FIXME
-        return reimbursementRepos.getReimbursementsByreimbId(updateThisReimbursement.getId());
+        return reimbursementRepo.getReimbursementsByreimbId(updateThisReimbursement.getId());
     }
 
     public Boolean approveReimbursement(String reimbId) {
