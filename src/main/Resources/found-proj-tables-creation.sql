@@ -93,7 +93,7 @@ create table ers_reimbursements(
 insert into "ers_user_roles"("role_id", "role")
 				values ('0', 'Admin'),
 				('1', 'Finance Manager'),
-				('2', 'Employee');]
+				('2', 'Employee');
 
 insert into "ers_reimbursement_statuses"("status_id", "status")
 				values ('0', 'pending'),

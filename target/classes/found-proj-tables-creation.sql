@@ -1,10 +1,10 @@
 --drop them just in case we need to wipe it all and start over
 --while building/setting up the tables
-DROP TABLE IF exists ers_reimbursments;
+DROP TABLE IF exists ers_reimbursements;
 DROP TABLE IF EXISTS ers_users;
 DROP TABLE IF EXISTS ers_user_roles;
-DROP TABLE IF EXISTS ers_reimbursment_statuses;
-DROP TABLE IF EXISTS ers_reimbursment_types;
+DROP TABLE IF EXISTS ers_reimbursement_statuses;
+DROP TABLE IF EXISTS ers_reimbursement_types;
 
 --start creating tables 
 --ers_user_roles
@@ -36,27 +36,27 @@ create table ers_users(
 	
 );
 
---ers_reimbursment_types 
-create table ers_reimbursment_types (
+--ers_reimbursement_types
+create table ers_reimbursement_types (
 	type_id varchar,
 	type 	varchar unique,
 	
-	constraint reimbursment_types_pk
+	constraint reimbursement_types_pk
 	primary key (type_id)
 );
 
---ers_reimbursment_statuses 
-create table ers_reimbursment_statuses(
+--ers_reimbursement_statuses
+create table ers_reimbursement_statuses(
 	status_id 	varchar,
 	status		varchar unique,
 	
-	constraint reimbursment_statuses_pk
+	constraint reimbursement_statuses_pk
 	primary key (status_id)
 );
 
 
 --ers-reimbursements
-create table ers_reimbursments(
+create table ers_reimbursements(
 	reimb_id 	varchar, 
 	amount 		numeric(6, 2) not null, 
 	submitted 	timestamp not null,
@@ -69,7 +69,7 @@ create table ers_reimbursments(
 	status_id 	varchar not null,
 	type_id 	varchar not null,
 		
-	constraint ers_reimbursments_pk
+	constraint ers_reimbursements_pk
 	primary key (reimb_id),
 	
 	constraint author_id_fk
@@ -82,25 +82,25 @@ create table ers_reimbursments(
 	
     constraint status_id_fk
     foreign key (status_id)
-    references ers_reimbursment_statuses (status_id),
+    references ers_reimbursement_statuses (status_id),
     
     constraint type_id_fk
     foreign key (type_id)
-    references ers_reimbursment_types (type_id)
+    references ers_reimbursement_types (type_id)
 );
 
 
 insert into "ers_user_roles"("role_id", "role")
 				values ('0', 'Admin'),
 				('1', 'Finance Manager'),
-				('2', 'Employee');]
+				('2', 'Employee');
 
-insert into "ers_reimbursment_statuses"("status_id", "status")
+insert into "ers_reimbursement_statuses"("status_id", "status")
 				values ('0', 'pending'),
 				('1', 'approved'),
 				('2', 'denied');
 
-insert into "ers_reimbursment_types"("type_id", "type")
+insert into "ers_reimbursement_types"("type_id", "type")
 				values ('0', 'Lodging'),
 				('1', 'Travel'),
 				('2', 'Food'),
@@ -110,11 +110,11 @@ select * from ers_users;
 
 select * from ers_user_roles;
 
-select * from ers_reimbursment_types;
+select * from ers_reimbursement_types;
 
-select * from ers_reimbursment_statuses;
+select * from ers_reimbursement_statuses;
 
-select * from ers_reimbursments;
+select * from ers_reimbursements;
 
 
 

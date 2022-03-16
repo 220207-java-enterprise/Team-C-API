@@ -8,6 +8,7 @@ import com.revature.erm.models.*;
 import com.revature.erm.repos.ReimbursementRepos;
 import com.revature.erm.util.exceptions.InvalidRequestException;
 import com.revature.erm.util.exceptions.ResourceConflictException;
+import com.revature.erm.util.exceptions.ResourceNotFoundException;
 import org.postgresql.util.ReaderInputStream;
 import org.springframework.stereotype.Service;
 
@@ -59,13 +60,21 @@ public class ReimbursementService {
 
 
 
-    public List<Reimbursement> changeReimbursementStatus(UpdateReimbursementRequest updateReimbursementRequest) {
+    public boolean changeReimbursementStatus(UpdateReimbursementRequest updateReimbursementRequest) {
 
         Reimbursement updateThisReimbursement = updateReimbursementRequest.extractReimbursement();
 
+        // TODO validate that this update is good to persist
+
+        Reimbursement originalReimbursement = reimbursementRepos.findById(updateReimbursementRequest.getId()).orElseThrow(ResourceNotFoundException::new);
+
+        // TODO map new/updated values from updateThisReimb to the originalReimb
+
         reimbursementRepos.update(updateThisReimbursement);
 
-        return reimbursementRepos.getReimbursementsByreimbId(updateThisReimbursement.getId());
+        // TODO fix me
+        return false;
+
     }
 
     public Boolean approveReimbursement(String reimbId) {
