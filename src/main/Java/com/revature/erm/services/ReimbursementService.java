@@ -46,8 +46,8 @@ public class ReimbursementService {
 
         newReimbursement.setId(UUID.randomUUID().toString());
 
-        newReimbursement.setAuthor_id(newReimbursementRequest.getAuthorId());
-        newReimbursement.setResolver_id("5c24b9ca-58ed-41c9-a619-7a19136b21f6");
+//        newReimbursement.setAuthor_id(newReimbursementRequest);
+//        newReimbursement.setResolver_id("5c24b9ca-58ed-41c9-a619-7a19136b21f6");
 
         newReimbursement.setType_id("3");//setType(new ReimbursementType("3", "Other"));
         newReimbursement.setStatus_id("0");//setStatus(new ReimbursementStatus("0", "pending"));

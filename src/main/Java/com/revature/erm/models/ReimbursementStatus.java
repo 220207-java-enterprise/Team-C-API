@@ -6,12 +6,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table (name = "reimbursement_status")
+@Table (name = "ers_reimbursement_statuses")
 public class ReimbursementStatus {
     @Id
     private String id;
     @Column (name = "status", unique = true)
     private String status;
+
+    public ReimbursementStatus() {
+    }
 
     public ReimbursementStatus(String id, String status) {
         this.id = id;

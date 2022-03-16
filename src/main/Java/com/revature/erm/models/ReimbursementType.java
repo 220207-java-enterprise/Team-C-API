@@ -13,6 +13,9 @@ public class ReimbursementType {
     @Column (name = "type", unique = true)
     private String type;
 
+    public ReimbursementType() {
+    }
+
 
     public String getId() {
         return id;

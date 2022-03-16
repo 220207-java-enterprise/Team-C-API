@@ -17,8 +17,8 @@ public class NewReimbursementRequest {
     private String description;
     private String payment_id = null;
     //private User author;
-    private String author_id;
-    private String resolver;
+    private User author_id;
+    private User resolver;
     private ReimbursementStatus status;
     private ReimbursementType type;
 
@@ -56,19 +56,19 @@ public class NewReimbursementRequest {
         this.payment_id = payment_id;
     }
 
-    public String getAuthorId() {
+    public User getAuthorId() {
         return author_id;
     }
 
-    public void setAuthorId(String author) {
+    public void setAuthorId(User author) {
         this.author_id = author;
     }
 
-    public String getResolver() {
+    public User getResolver() {
         return resolver;
     }
 
-    public void setResolver(String resolver) {
+    public void setResolver(User resolver) {
         this.resolver = resolver;
     }
 

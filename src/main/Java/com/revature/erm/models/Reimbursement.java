@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 @Entity
-@Table (name = "reimbursement")
+@Table (name = "ers_reimbursements")
 public class Reimbursement {
     @Id
     private String id;
@@ -24,10 +24,10 @@ public class Reimbursement {
     //TODO @OneToOne or @ManyToOne on com.revature.erm.models.Reimbursement.author_id references an unknown entity
     @OneToOne
     @JoinColumn (name = "author_id", nullable = false)
-    private String author_id;
+    private User author_id;
     @OneToOne
     @JoinColumn (name = "resolver_id", nullable = false)
-    private String resolver_id;
+    private User resolver_id;
     //private ReimbursementStatus status;
     //private ReimbursementType type;
     @OneToOne
@@ -39,7 +39,7 @@ public class Reimbursement {
 
     public Reimbursement() { super(); }
 
-    public Reimbursement(String resolver, Double amount, String description, Timestamp submitted) {
+    public Reimbursement(User resolver, Double amount, String description, Timestamp submitted) {
         this.amount = amount;
         this.submitted = submitted;
         this.description = description;
@@ -107,19 +107,19 @@ public class Reimbursement {
         this.resolver = resolver;
     }*/
 
-    public String getAuthor_id() {
+    public User getAuthor_id() {
         return author_id;
     }
 
-    public void setAuthor_id(String author_id) {
+    public void setAuthor_id(User author_id) {
         this.author_id = author_id;
     }
 
-    public String getResolver_id() {
+    public User getResolver_id() {
         return resolver_id;
     }
 
-    public void setResolver_id(String resolver_id) {
+    public void setResolver_id(User resolver_id) {
         this.resolver_id = resolver_id;
     }
 
@@ -153,7 +153,7 @@ public class Reimbursement {
     }
 
     Reimbursement(String id, Double amount, Timestamp submitted, Timestamp resolved, String description,
-                  String payment_id, String author, User resolver, String status, String type) {
+                  String payment_id, User author, User resolver, String status, String type) {
         //this.id = id;
         this.amount = amount;
         this.submitted = submitted;
