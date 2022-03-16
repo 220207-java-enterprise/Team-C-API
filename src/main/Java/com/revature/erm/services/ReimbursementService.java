@@ -30,15 +30,14 @@ public class ReimbursementService {
     }
 
     public List<Reimbursement> getReimbursementByAuthorId(ListUserReimbursementsRequest lrur) { //String authorId)
-
         User author = lrur.getAuthorId();
 
-        List<Reimbursement> reimbursements = reimbursementRepos.getReimbursementByAuthor_Id(author);//new ArrayList<>();
+        List<Reimbursement> reimbursements = reimbursementRepos.getReimbursementByAuthor_Id(author.getId());//new ArrayList<>();
 
         return reimbursements;
     }
 
-    public Reimbursement submitNewReimbursment(NewReimbursementRequest newReimbursementRequest) {
+    public Reimbursement submitNewReimbursement(NewReimbursementRequest newReimbursementRequest) {
 
         Reimbursement newReimbursement = newReimbursementRequest.extractReimbursement();
         System.out.println("is new reimbursement null?: " + newReimbursement==null);
@@ -63,10 +62,9 @@ public class ReimbursementService {
     public List<Reimbursement> changeReimbursementStatus(UpdateReimbursementRequest updateReimbursementRequest) {
 
         Reimbursement updateThisReimbursement = updateReimbursementRequest.extractReimbursement();
-        //TODO create Update in reimbursementRepos
+
         reimbursementRepos.update(updateThisReimbursement);
 
-        //TODO FIXME
         return reimbursementRepos.getReimbursementsByreimbId(updateThisReimbursement.getId());
     }
 

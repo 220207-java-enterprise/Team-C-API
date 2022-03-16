@@ -16,7 +16,7 @@ public interface ReimbursementRepos extends CrudRepository<Reimbursement, String
     List<Reimbursement> getReimbursementsByreimbId(String reimb_id);
 
     @Query("from ers_reimbursements r where r.author_id = ?1")
-    List<Reimbursement> getReimbursementByAuthor_Id(User author_id);
+    List<Reimbursement> getReimbursementByAuthor_Id(String author_id);
 
     /*@Query(
             value = "SELECT * from reimbursement where material = ?1",
