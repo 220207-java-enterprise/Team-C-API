@@ -15,14 +15,14 @@ public interface UserRepos extends JpaRepository <User, String> {
 //    @Modifying
 //    @Query("update ers_users u set u.username = ?1, u.email = ?2, u.password = ?3, u.first_name = ?4, " +
 //            "u.last_name = ?5, u.is_active = ?6, u.role_id = ?7 where u.user_id = ?8")
-//    List<User> update(User updatedUser);
+//    User update(String id);
 
 
     User findUserByUsernameAndPassword (String username, String password);
 
-
     User findUserByUsername (String username);
 
-
     User findUserByEmail (String email);
+
+
 }

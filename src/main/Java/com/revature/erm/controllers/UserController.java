@@ -1,6 +1,8 @@
 package com.revature.erm.controllers;
 
 import com.revature.erm.dtos.requests.NewUserRequest;
+import com.revature.erm.dtos.requests.UpdateUserRequest;
+import com.revature.erm.dtos.responses.Principal;
 import com.revature.erm.dtos.responses.ResourceCreationResponse;
 import com.revature.erm.dtos.responses.UserResponse;
 import com.revature.erm.models.User;
@@ -58,4 +60,9 @@ public class UserController {
         return new ResourceCreationResponse(newUser.getId());
     }
 
+    @PutMapping(consumes = "application/json", produces = "application/json")
+    public Principal updateUser(@RequestBody UpdateUserRequest updateUserRequest){
+        User updatedUser = userService.updateUser(updateUserRequest);
+        return new Principal(updatedUser);
+    }
 }
