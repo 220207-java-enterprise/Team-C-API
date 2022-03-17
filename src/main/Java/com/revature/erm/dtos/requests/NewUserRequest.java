@@ -1,12 +1,11 @@
 package com.revature.erm.dtos.requests;
 
 import com.revature.erm.models.User;
-import com.revature.erm.models.UserRole;
 
 public class NewUserRequest {
 
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
     private String email;
     private String username;
     private String password;
@@ -16,28 +15,28 @@ public class NewUserRequest {
         super();
     }
 
-    public NewUserRequest(String firstName, String lastName, String email, String username, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public NewUserRequest(String firstname, String lastname, String email, String username, String password) {
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.email = email;
         this.username = username;
         this.password = password;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getEmail() {
@@ -65,14 +64,14 @@ public class NewUserRequest {
     }
 
     public User extractUser() {
-        return new User(firstName, lastName, email, username, password);
+        return new User(firstname, lastname, email, username, password);
     }
 
     @Override
     public String toString() {
         return "NewUserRequest{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                "firstName='" + firstname + '\'' +
+                ", lastName='" + lastname + '\'' +
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +

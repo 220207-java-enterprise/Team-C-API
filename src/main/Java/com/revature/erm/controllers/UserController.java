@@ -3,6 +3,7 @@ package com.revature.erm.controllers;
 import com.revature.erm.dtos.requests.NewUserRequest;
 import com.revature.erm.dtos.responses.ResourceCreationResponse;
 import com.revature.erm.dtos.responses.UserResponse;
+import com.revature.erm.models.User;
 import com.revature.erm.services.UserService;
 import com.revature.erm.util.exceptions.InvalidRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,9 @@ public class UserController {
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public ResourceCreationResponse registerNewUser(NewUserRequest newUserRequest) {
-        return new ResourceCreationResponse(userService.register(newUserRequest).getId());
+    public ResourceCreationResponse registerNewUser(@RequestBody NewUserRequest newUserRequest) {
+        User newUser = userService.register(newUserRequest);
+        return new ResourceCreationResponse(newUser.getId());
     }
 
 }

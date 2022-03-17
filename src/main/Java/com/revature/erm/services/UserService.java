@@ -45,7 +45,6 @@ public class UserService {
     public User register(NewUserRequest newUserRequest) {
 
         User newUser = newUserRequest.extractUser();
-
         if (!isUserValid(newUser)) {
             throw new InvalidRequestException("Bad registration details given.");
         }
@@ -63,7 +62,8 @@ public class UserService {
         // TODO encrypt provided password before storing in the database
 
         newUser.setId(UUID.randomUUID().toString());
-        newUser.setRoleId(new UserRole("7c3521f5-ff75-4e8a-9913-01d15ee4dc97", "BASIC_USER")); // All newly registered users start as BASIC_USER
+        newUser.setRoleId(new UserRole("2", "Employee")); // All newly registered users start as Employee
+        newUser.setActive(false);//All users are inactive at first an admin must activate and change roles
         userRepo.save(newUser);
 
         return newUser;
