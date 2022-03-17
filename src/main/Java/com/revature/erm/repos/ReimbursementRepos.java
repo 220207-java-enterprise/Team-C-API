@@ -2,6 +2,7 @@ package com.revature.erm.repos;
 
 import com.revature.erm.models.Reimbursement;
 import com.revature.erm.models.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ReimbursementRepos extends CrudRepository<Reimbursement, String> {
+public interface ReimbursementRepos extends JpaRepository<Reimbursement, String> {
 
 //    @Query("from Reimbursements r where r.author_id = ?1")
 //    List<Reimbursement> getReimbursementByAuthor_Id(String author_id);
