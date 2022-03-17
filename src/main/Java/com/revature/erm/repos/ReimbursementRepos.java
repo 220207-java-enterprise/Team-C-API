@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ReimbursementRepos extends CrudRepository<Reimbursement, String> {
 
-//    @Query("from ers_reimbursements r where r.author_id = ?1")
+//    @Query("from Reimbursements r where r.author_id = ?1")
 //    List<Reimbursement> getReimbursementByAuthor_Id(String author_id);
 //
 //    /*@Query(
