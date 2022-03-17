@@ -1,13 +1,25 @@
 package com.revature.erm.dtos.responses;
 
+import com.revature.erm.models.Reimbursement;
+
 public class ReimbursementResponse {
     private String id;
-    private int amount;
+    private Double amount;
     private String description;
     private String author_id;
     private String resolver_id;
     private String status_id;
     private String type_id;
+
+    public ReimbursementResponse(Reimbursement reimbursement) {
+        this.id = reimbursement.getId();
+        this.amount = reimbursement.getAmount();
+        this.description = reimbursement.getDescription();
+        this.author_id = reimbursement.getAuthor_id().getId();
+        this.resolver_id = reimbursement.getResolver_id().getId();
+        this.status_id = reimbursement.getStatus_id().getId();
+        this.type_id = reimbursement.getType_id().getId();
+    }
 
     public String getId() {
         return id;
@@ -17,11 +29,11 @@ public class ReimbursementResponse {
         this.id = id;
     }
 
-    public int getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
