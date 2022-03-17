@@ -3,6 +3,7 @@ package com.revature.erm.services;
 import com.revature.erm.dtos.requests.ListUserReimbursementsRequest;
 import com.revature.erm.dtos.requests.NewReimbursementRequest;
 import com.revature.erm.dtos.requests.UpdateReimbursementRequest;
+import com.revature.erm.dtos.responses.ReimbursementResponse;
 import com.revature.erm.dtos.responses.ResourceCreationResponse;
 import com.revature.erm.models.*;
 import com.revature.erm.repos.ReimbursementRepos;
@@ -12,11 +13,13 @@ import com.revature.erm.util.exceptions.ResourceNotFoundException;
 import org.postgresql.util.ReaderInputStream;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ReimbursementService {
@@ -24,9 +27,11 @@ public class ReimbursementService {
     private ReimbursementRepos reimbursementRepos;
 
 
-    public ReimbursementService(ReimbursementRepos reimbursementRepos) {this.reimbursementRepos = reimbursementRepos;}
+    public ReimbursementService(ReimbursementRepos reimbursementRepos) {
+        this.reimbursementRepos = reimbursementRepos;
+    }
 
-    public List<Reimbursement> getReimbursementByStatusId(String statusId){
+    public List<Reimbursement> getReimbursementByStatusId(String statusId) {
         return null;
     }
 
@@ -41,7 +46,7 @@ public class ReimbursementService {
     public Reimbursement submitNewReimbursement(NewReimbursementRequest newReimbursementRequest) {
 
         Reimbursement newReimbursement = newReimbursementRequest.extractReimbursement();
-        System.out.println("is new reimbursement null?: " + newReimbursement==null);
+        System.out.println("is new reimbursement null?: " + newReimbursement == null);
         // TODO encrypt provided password before storing in the database
 
         newReimbursement.setId(UUID.randomUUID().toString());
@@ -85,13 +90,13 @@ public class ReimbursementService {
                 return false;
             else
                 throw new Exception();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("invalid user input");
         }
         return null;
     }
+
     public boolean denyReimbursement(String reimbId) {
         return false;
     }
@@ -102,4 +107,17 @@ public class ReimbursementService {
     // boolean approveReimbursement(String reimbId);
     // boolean denyReimbursement(String reimbId);
 
+    public List<ReimbursementResponse> getAllReimbursements() {
+       /* List<Reimbursement> Reimbursement = reimbursementRepos.findAll();
+        List<ReimbursementResponse> reimbursementResponses = new ArrayList<>();
+        for (Reimbursement reimbursement : Reimbursement) {
+            reimbursementResponses.add(new ReimbursementResponse((Reimbursement)));
+
+        return reimbursementResponses;
+    */    return reimbursementRepos.findAll().stream().map(ReimbursementResponse::new).collect(Collectors.toList());
+
+    }
 }
+
+
+
