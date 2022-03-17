@@ -6,11 +6,14 @@ import com.revature.erm.dtos.responses.Principal;
 import com.revature.erm.dtos.responses.ResourceCreationResponse;
 import com.revature.erm.dtos.responses.UserResponse;
 import com.revature.erm.models.User;
+import com.revature.erm.services.TokenService;
 import com.revature.erm.services.UserService;
 import com.revature.erm.util.exceptions.InvalidRequestException;
+import com.revature.erm.util.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
@@ -20,10 +23,12 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final TokenService tokenService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, TokenService tokenService) {
         this.userService = userService;
+        this.tokenService = tokenService;
     }
 
     @GetMapping(produces = "application/json")
@@ -61,7 +66,16 @@ public class UserController {
     }
 
     @PutMapping(consumes = "application/json", produces = "application/json")
-    public Principal updateUser(@RequestBody UpdateUserRequest updateUserRequest){
+    public Principal updateUser(@RequestBody UpdateUserRequest updateUserRequest, HttpServletRequest req){
+        Principal ifAdmin = tokenService.extractRequesterDetails(req.getHeader("Authorization"));
+        //check if time expired on token = null
+        //System.out.println(ifAdmin);
+        if (ifAdmin == null){
+            throw new ResourceNotFoundException("Login token issue: wrong token, not provided, or may have expired.");
+        }
+        if(!(ifAdmin.getRole().equals("Admin"))) {
+            throw new InvalidRequestException("Not an Admin!");
+        }
         User updatedUser = userService.updateUser(updateUserRequest);
         return new Principal(updatedUser);
     }
