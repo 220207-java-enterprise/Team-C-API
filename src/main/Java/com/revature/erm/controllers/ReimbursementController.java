@@ -25,7 +25,7 @@ public class ReimbursementController {
     }
 
     @GetMapping(path = "fromuser")
-    List<Reimbursement> getallReimbursements (){
+    public List<ReimbursementResponse> getallReimbursements (){
         return reimbursementService.getAllReimbursements();
     }
 
