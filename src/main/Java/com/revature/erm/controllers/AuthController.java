@@ -22,15 +22,20 @@ import java.util.HashMap;
 public class AuthController {
 
     private final UserService userService;
-
+    private final TokenService tokenService;
 
     @Autowired
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, TokenService tokenService) {
         this.userService = userService;
+        this.tokenService = tokenService;
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public Principal authenticate(@RequestBody LoginRequest loginRequest) {
+    public Principal authenticate(@RequestBody LoginRequest loginRequest, HttpServletResponse resp) {
+        //Generates a new token
+        String token = tokenService.generateToken(new Principal(userService.login(loginRequest)));
+        //Sets the token
+        resp.setHeader("Authorization", token);
         return new Principal(userService.login(loginRequest));
     }
 

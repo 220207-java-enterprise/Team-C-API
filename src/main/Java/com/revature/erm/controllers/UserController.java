@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/User")
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
@@ -31,7 +31,8 @@ public class UserController {
     @GetMapping(path = "/availability")
     public void checkAvailability(@RequestParam Map<String, String> requestParams, HttpServletResponse resp) {
         if (requestParams.size() != 1) {
-            throw new InvalidRequestException("This endpoint expects only a single request parameter to be provided; either: username or email.");
+            throw new InvalidRequestException("This endpoint expects only a single request parameter to be provided; " +
+                    "either: username or email.");
         }
         String username = requestParams.get("username");
         String email = requestParams.get("email");

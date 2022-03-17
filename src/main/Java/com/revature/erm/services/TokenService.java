@@ -26,7 +26,7 @@ public class TokenService {
 
         JwtBuilder tokenBuilder = Jwts.builder()
                 .setId(subject.getId())
-                .setIssuer("foundations-project")
+                .setIssuer("p2_foundation")
                 .setIssuedAt(new Date(now))
                 .setExpiration(new Date(now + jwtConfig.getExpiration()))
                 .setSubject(subject.getUsername())
