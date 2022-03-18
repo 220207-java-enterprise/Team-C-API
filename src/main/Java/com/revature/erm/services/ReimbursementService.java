@@ -26,22 +26,34 @@ public class ReimbursementService {
 
     private ReimbursementRepos reimbursementRepos;
 
-
     public ReimbursementService(ReimbursementRepos reimbursementRepos) {
         this.reimbursementRepos = reimbursementRepos;
     }
 
-    public List<Reimbursement> getReimbursementByStatusId(String statusId) {
-        return null;
+    public List<ReimbursementResponse> getAllReimbursements() {
+
+        //Old way preJava 8
+        /* List<Reimbursement> Reimbursement = reimbursementRepos.findAll();
+        List<ReimbursementResponse> reimbursementResponses = new ArrayList<>();
+        for (Reimbursement reimbursement : Reimbursement) {
+            reimbursementResponses.add(new ReimbursementResponse((Reimbursement)));
+        return reimbursementResponses;*/
+
+        return reimbursementRepos.findAll()
+                .stream()
+                .map(ReimbursementResponse::new)
+                .collect(Collectors.toList());
+
     }
 
-//    public List<Reimbursement> getReimbursementByAuthorId(ListUserReimbursementsRequest lrur) { //String authorId)
-//        User author = lrur.getAuthorId();
-//
-//        List<Reimbursement> reimbursements = reimbursementRepos.getReimbursementByAuthor_Id(author);//new ArrayList<>();
-//
-//        return reimbursements;
-//    }
+
+    public List<ReimbursementResponse> getReimbursementByAuthorId(String lrur) { //String authorId)
+
+        return reimbursementRepos.getReimbursementByAuthor_Id(lrur)
+                .stream()
+                .map(ReimbursementResponse::new)
+                .collect(Collectors.toList());
+    }
 
     public Reimbursement submitNewReimbursement(NewReimbursementRequest newReimbursementRequest) {
 
@@ -107,16 +119,7 @@ public class ReimbursementService {
     // boolean approveReimbursement(String reimbId);
     // boolean denyReimbursement(String reimbId);
 
-    public List<ReimbursementResponse> getAllReimbursements() {
-       /* List<Reimbursement> Reimbursement = reimbursementRepos.findAll();
-        List<ReimbursementResponse> reimbursementResponses = new ArrayList<>();
-        for (Reimbursement reimbursement : Reimbursement) {
-            reimbursementResponses.add(new ReimbursementResponse((Reimbursement)));
 
-        return reimbursementResponses;
-    */    return reimbursementRepos.findAll().stream().map(ReimbursementResponse::new).collect(Collectors.toList());
-
-    }
 }
 
 

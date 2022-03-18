@@ -36,7 +36,7 @@ public class Reimbursement {
     private User author_id;
 
     @ManyToOne
-    @JoinColumn (name = "resolver_id", nullable = false)
+    @JoinColumn (name = "resolver_id")
     private User resolver_id;
 
     //private ReimbursementStatus status;
