@@ -1,10 +1,7 @@
 package com.revature.erm.models;
 
 import javax.persistence.*;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table (name = "ers_reimbursements")
