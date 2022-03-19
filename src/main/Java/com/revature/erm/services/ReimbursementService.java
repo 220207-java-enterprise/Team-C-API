@@ -1,10 +1,12 @@
 package com.revature.erm.services;
 
 import com.revature.erm.dtos.requests.NewReimbursementRequest;
+import com.revature.erm.dtos.requests.UpdateReimbursementRequest;
 import com.revature.erm.dtos.responses.ReimbursementResponse;
 import com.revature.erm.models.*;
 import com.revature.erm.repos.ReimbursementRepos;
 import com.revature.erm.repos.UserRepos;
+import com.revature.erm.util.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,26 +66,29 @@ public class ReimbursementService {
 
         reimbursementRepos.save(newReimbursement);
 
-        return newReimbursement;//newUser;
+        return newReimbursement;
     }
 
 
-//    public boolean changeReimbursementStatus(UpdateReimbursementRequest updateReimbursementRequest) {
-//
-//        Reimbursement updateThisReimbursement = updateReimbursementRequest.extractReimbursement();
-//
-//        // TODO validate that this update is good to persist
-//
-//        Reimbursement originalReimbursement = reimbursementRepos.findById(updateReimbursementRequest.getId()).orElseThrow(ResourceNotFoundException::new);
-//
-//        // TODO map new/updated values from updateThisReimb to the originalReimb
-//
-//        reimbursementRepos.update(updateThisReimbursement);
-//
-//        // TODO fix me
-//        return false;
-//
-//    }
+    public Reimbursement approveOrDenyReimbursementStatus(UpdateReimbursementRequest updateReimbursementRequest) {
+
+        Reimbursement originalReimbursement = reimbursementRepos.findById(updateReimbursementRequest.getReimb_id())
+                .orElseThrow(ResourceNotFoundException::new);
+
+        Optional<User> Extract = userRepos.findById(updateReimbursementRequest.getResolver_id().getId());
+
+        Reimbursement updateThisReimbursement = originalReimbursement;
+        updateThisReimbursement.setResolver_id(Extract.get());
+        updateThisReimbursement.setResolved(Timestamp.valueOf(LocalDateTime.now()));
+        // TODO validate that this update is good to persist
+        originalReimbursement = updateThisReimbursement;
+        // TODO map new/updated values from updateThisReimb to the originalReimb
+
+        reimbursementRepos.save(originalReimbursement);
+
+        return originalReimbursement;
+
+    }
 
     public Boolean approveReimbursement(String reimbId) {
         //Reimbursement newReimbursement = newReimbursementRequest.extractReimbursement();

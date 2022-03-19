@@ -60,6 +60,12 @@ public class Reimbursement {
         this.type_id = type_id;
     }
 
+    public Reimbursement(String reimb_id, User resolver_id, ReimbursementStatus status_id) {
+        this.reimb_id = reimb_id;
+        this.resolver_id = resolver_id;
+        this.status_id = status_id;
+    }
+
     public String getReimb_id() {
         return reimb_id;
     }

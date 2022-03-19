@@ -1,6 +1,7 @@
 package com.revature.erm.controllers;
 
 import com.revature.erm.dtos.requests.NewReimbursementRequest;
+import com.revature.erm.dtos.requests.UpdateReimbursementRequest;
 import com.revature.erm.dtos.responses.Principal;
 import com.revature.erm.dtos.responses.ReimbursementResponse;
 import com.revature.erm.dtos.responses.ResourceCreationResponse;
@@ -62,4 +63,21 @@ public class ReimbursementController {
         return new ResourceCreationResponse(newReimbursement.getReimb_id());
     }
 
+    @PutMapping(consumes = "application/json", produces = "application/json")
+    public Reimbursement approveOrDenyRemibursement(@RequestBody UpdateReimbursementRequest updateReimbursementRequest,
+                                                    HttpServletRequest req){
+        Principal ifManager = tokenService.extractRequesterDetails(req.getHeader("Authorization"));
+
+        if (ifManager == null){
+            throw new ResourceNotFoundException("Login token issue: wrong token, not provided, or may have expired.");
+        }
+        if(!(ifManager.getRole().equals("Finance Manager"))) {
+            throw new InvalidRequestException("Must be a Finance Manager to approve reimbursement!");
+        }
+
+        Reimbursement updatedReimbursement = reimbursementService.approveOrDenyReimbursementStatus
+                (updateReimbursementRequest);
+
+        return updatedReimbursement;
+    }
 }

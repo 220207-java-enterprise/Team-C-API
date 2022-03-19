@@ -4,46 +4,49 @@ import com.revature.erm.models.Reimbursement;
 import com.revature.erm.models.ReimbursementStatus;
 import com.revature.erm.models.User;
 
-import java.time.LocalDateTime;
-
 public class UpdateReimbursementRequest {
 
-    private String reimbId;
-    private String resolverId;
-    private String status;
+    private String reimb_id;
+    private User resolver_id;
+    private ReimbursementStatus status_id;
 
     public UpdateReimbursementRequest(){
         super();
     }
 
-    public UpdateReimbursementRequest(String reimbId, String resolverId, String status) {
-        this.reimbId = reimbId;
-        this.resolverId = resolverId;
-        this.status = status;
+    public UpdateReimbursementRequest(String reimb_id, User resolver_id, ReimbursementStatus status_id) {
+        this.reimb_id = reimb_id;
+        this.resolver_id = resolver_id;
+        this.status_id = status_id;
     }
 
-    public String getReimbId() {
-        return reimbId;
+    public String getReimb_id() {
+        return reimb_id;
     }
 
-    public void setReimbId(String reimbId) {
-        this.reimbId = reimbId;
+    public void setReimb_id(String reimb_id) {
+        this.reimb_id = reimb_id;
     }
 
-    public String getResolverId() {
-        return resolverId;
+    public User getResolver_id() {
+        return resolver_id;
     }
 
-    public void setResolverId(String resolverId) {
-        this.resolverId = resolverId;
+    public void setResolver_id(User resolver_id) {
+        this.resolver_id = resolver_id;
     }
 
-    public String getStatus() {
-        return status;
+    public ReimbursementStatus getStatus_id() {
+        return status_id;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatus_id(ReimbursementStatus status_id) {
+        this.status_id = status_id;
+    }
+
+    public Reimbursement extractReimbursement() {
+
+        return new Reimbursement(this.reimb_id, this.resolver_id, this.status_id);
     }
 
 }
