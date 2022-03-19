@@ -2,10 +2,7 @@ package com.revature.erm.models;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-<<<<<<< HEAD
 import java.util.Objects;
-=======
->>>>>>> 8998ae98e653492425169fdff3de01d76b2047d7
 
 @Entity
 @Table (name = "ers_reimbursements")
