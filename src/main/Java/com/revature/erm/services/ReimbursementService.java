@@ -77,16 +77,23 @@ public class ReimbursementService {
 
         Optional<User> Extract = userRepos.findById(updateReimbursementRequest.getResolver_id().getId());
 
-        Reimbursement updateThisReimbursement = originalReimbursement;
+        Reimbursement updateThisReimbursement = updateReimbursementRequest.extractReimbursement();
+        updateThisReimbursement.setReimb_id(originalReimbursement.getReimb_id());
+        updateThisReimbursement.setAmount(originalReimbursement.getAmount());
+        updateThisReimbursement.setAuthor_id(originalReimbursement.getAuthor_id());
+        updateThisReimbursement.setSubmitted(originalReimbursement.getSubmitted());
+        updateThisReimbursement.setDescription(originalReimbursement.getDescription());
+        updateThisReimbursement.setType_id(originalReimbursement.getType_id());
         updateThisReimbursement.setResolver_id(Extract.get());
         updateThisReimbursement.setResolved(Timestamp.valueOf(LocalDateTime.now()));
+
         // TODO validate that this update is good to persist
-        originalReimbursement = updateThisReimbursement;
+
         // TODO map new/updated values from updateThisReimb to the originalReimb
 
-        reimbursementRepos.save(originalReimbursement);
+        reimbursementRepos.save(updateThisReimbursement);
 
-        return originalReimbursement;
+        return updateThisReimbursement;
 
     }
 

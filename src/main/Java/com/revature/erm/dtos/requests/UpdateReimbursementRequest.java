@@ -49,4 +49,12 @@ public class UpdateReimbursementRequest {
         return new Reimbursement(this.reimb_id, this.resolver_id, this.status_id);
     }
 
+    @Override
+    public String toString() {
+        return "UpdateReimbursementRequest{" +
+                "reimb_id='" + reimb_id + '\'' +
+                ", resolver_id=" + resolver_id +
+                ", status_id=" + status_id +
+                '}';
+    }
 }
