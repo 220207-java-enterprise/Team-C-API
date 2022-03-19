@@ -1,23 +1,17 @@
 package com.revature.erm.services;
 
-import com.revature.erm.dtos.requests.ListUserReimbursementsRequest;
 import com.revature.erm.dtos.requests.NewReimbursementRequest;
-import com.revature.erm.dtos.requests.UpdateReimbursementRequest;
 import com.revature.erm.dtos.responses.ReimbursementResponse;
-import com.revature.erm.dtos.responses.ResourceCreationResponse;
 import com.revature.erm.models.*;
 import com.revature.erm.repos.ReimbursementRepos;
-import com.revature.erm.util.exceptions.InvalidRequestException;
-import com.revature.erm.util.exceptions.ResourceConflictException;
-import com.revature.erm.util.exceptions.ResourceNotFoundException;
-import org.postgresql.util.ReaderInputStream;
+import com.revature.erm.repos.UserRepos;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -25,9 +19,12 @@ import java.util.stream.Collectors;
 public class ReimbursementService {
 
     private ReimbursementRepos reimbursementRepos;
+    private UserRepos userRepos;
 
-    public ReimbursementService(ReimbursementRepos reimbursementRepos) {
+    @Autowired
+    public ReimbursementService(ReimbursementRepos reimbursementRepos, UserRepos userRepos) {
         this.reimbursementRepos = reimbursementRepos;
+        this.userRepos = userRepos;
     }
 
     public List<ReimbursementResponse> getAllReimbursements() {
@@ -56,20 +53,15 @@ public class ReimbursementService {
     }
 
     public Reimbursement submitNewReimbursement(NewReimbursementRequest newReimbursementRequest) {
+        //necessary to only have to input user by Id
+        Optional<User> Extract = userRepos.findById(newReimbursementRequest.getAuthor_id().getId());
 
         Reimbursement newReimbursement = newReimbursementRequest.extractReimbursement();
-        System.out.println("is new reimbursement null?: " + newReimbursement == null);
-        // TODO encrypt provided password before storing in the database
-
-        newReimbursement.setId(UUID.randomUUID().toString());
-
-//        newReimbursement.setAuthor_id(newReimbursementRequest);
-//        newReimbursement.setResolver_id("5c24b9ca-58ed-41c9-a619-7a19136b21f6");
-
-        newReimbursement.setType_id(new ReimbursementType("3", "Other"));
-        newReimbursement.setStatus_id(new ReimbursementStatus("0", "pending"));
+        newReimbursement.setAuthor_id(Extract.get());
+        newReimbursement.setReimb_id(UUID.randomUUID().toString());
         newReimbursement.setSubmitted(Timestamp.valueOf(LocalDateTime.now()));
-        //newUser.setIsActive(true);
+        newReimbursement.setStatus_id(new ReimbursementStatus("0", "Pending"));
+
         reimbursementRepos.save(newReimbursement);
 
         return newReimbursement;//newUser;

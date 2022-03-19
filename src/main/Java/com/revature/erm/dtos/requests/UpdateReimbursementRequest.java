@@ -8,25 +8,42 @@ import java.time.LocalDateTime;
 
 public class UpdateReimbursementRequest {
 
-    private String id;
-    private ReimbursementStatus status_id;
+    private String reimbId;
+    private String resolverId;
+    private String status;
 
-    public String getId() {
-        return id;
+    public UpdateReimbursementRequest(){
+        super();
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public UpdateReimbursementRequest(String reimbId, String resolverId, String status) {
+        this.reimbId = reimbId;
+        this.resolverId = resolverId;
+        this.status = status;
     }
 
-    public ReimbursementStatus getStatus_id() {
-        return status_id;
+    public String getReimbId() {
+        return reimbId;
     }
 
-    public void setStatus_id(ReimbursementStatus status_id) {
-        this.status_id = status_id;
+    public void setReimbId(String reimbId) {
+        this.reimbId = reimbId;
     }
 
-    public Reimbursement extractReimbursement() { return new Reimbursement(id, status_id); }
+    public String getResolverId() {
+        return resolverId;
+    }
+
+    public void setResolverId(String resolverId) {
+        this.resolverId = resolverId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
 }

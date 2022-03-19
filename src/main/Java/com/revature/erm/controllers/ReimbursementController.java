@@ -1,17 +1,20 @@
 package com.revature.erm.controllers;
 
+import com.revature.erm.dtos.requests.NewReimbursementRequest;
+import com.revature.erm.dtos.responses.Principal;
 import com.revature.erm.dtos.responses.ReimbursementResponse;
+import com.revature.erm.dtos.responses.ResourceCreationResponse;
 import com.revature.erm.models.Reimbursement;
+import com.revature.erm.models.User;
 import com.revature.erm.services.ReimbursementService;
 import com.revature.erm.services.TokenService;
 import com.revature.erm.services.UserService;
 import com.revature.erm.util.exceptions.InvalidRequestException;
+import com.revature.erm.util.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +43,23 @@ public class ReimbursementController {
                     "author_id.");
         }
         return reimbursementService.getReimbursementByAuthorId(author_id);
+    }
+
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    public ResourceCreationResponse postRemibursement(@RequestBody NewReimbursementRequest newReimbursementRequest,
+                                                      HttpServletRequest req){
+
+        Principal ifEmployee = tokenService.extractRequesterDetails(req.getHeader("Authorization"));
+
+        if (ifEmployee == null){
+            throw new ResourceNotFoundException("Login token issue: wrong token, not provided, or may have expired.");
+        }
+        if(!(ifEmployee.getRole().equals("Employee"))) {
+            throw new InvalidRequestException("Must be an Employee to create reimbursement!");
+        }
+
+        Reimbursement newReimbursement = reimbursementService.submitNewReimbursement(newReimbursementRequest);
+        return new ResourceCreationResponse(newReimbursement.getReimb_id());
     }
 
 }

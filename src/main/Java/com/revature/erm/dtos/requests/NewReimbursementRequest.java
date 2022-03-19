@@ -4,40 +4,24 @@ import com.revature.erm.models.Reimbursement;
 import com.revature.erm.models.ReimbursementStatus;
 import com.revature.erm.models.ReimbursementType;
 import com.revature.erm.models.User;
+import com.revature.erm.repos.UserRepos;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class NewReimbursementRequest {
 
-    //private String id;
     private Double amount;
-    private Timestamp submitted;
-    //private LocalDateTime resolved;
     private String description;
-    private String payment_id = null;
-    //private User author;
     private User author_id;
-    private User resolver;
-    private ReimbursementStatus status;
-    private ReimbursementType type;
+    private ReimbursementType type_id;
 
-    public NewReimbursementRequest(){ super(); }
-
-    public double getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
     public void setAmount(Double amount) {
         this.amount = amount;
-    }
-
-    public Timestamp getSubmitted() {
-        return submitted;
-    }
-
-    public void setSubmitted(Timestamp submitted) {
-        this.submitted = submitted;
     }
 
     public String getDescription() {
@@ -48,61 +32,41 @@ public class NewReimbursementRequest {
         this.description = description;
     }
 
-    public String getPayment_id() {
-        return payment_id;
-    }
-
-    public void setPayment_id(String payment_id) {
-        this.payment_id = payment_id;
-    }
-
-    public User getAuthorId() {
+    public User getAuthor_id() {
         return author_id;
     }
 
-    public void setAuthorId(User author) {
-        this.author_id = author;
-    }
-
-    public User getResolver() {
-        return resolver;
-    }
-
-    public void setResolver(User resolver) {
-        this.resolver = resolver;
-    }
-
-    public ReimbursementStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(ReimbursementStatus status) {
-        this.status = status;
+    public void setAuthor_id(User author_id) {
+        this.author_id = author_id;
     }
 
     public ReimbursementType getType() {
-        return type;
+        return type_id;
     }
 
     public void setType(ReimbursementType type) {
-        this.type = type;
+        this.type_id = type;
     }
 
-    public Reimbursement extractReimbursement() { return new Reimbursement(resolver, amount, description,
-            Timestamp.valueOf(LocalDateTime.now())/*, submitted,author, type*/); }
+    public Reimbursement extractReimbursement() {
+        String reimb_id = null;
+        Timestamp submitted = null;
+        Timestamp resolved = null;
+        String payment_id = null;
+        User resolver = null;
+        ReimbursementStatus status = null;
+        ReimbursementType newType = new ReimbursementType(this.type_id.getId(), this.type_id.getType());
+        return new Reimbursement(reimb_id, this.amount, submitted, resolved, this.description,
+                payment_id, this.author_id, resolver, status,
+                newType);
+    }
 
-    public NewReimbursementRequest(Double amount, String description, String payment_id,
-                                   User author, User resolver, ReimbursementType type){
-
+    public NewReimbursementRequest(Double amount, String description,
+                                   User author_id, ReimbursementType type_id) {
         this.amount = amount;
         this.description = description;
-        //this.payment_id = payment_id;
-        //this.author = author;
-        //this.resolver = resolver;
-        //this.type = type;
-        //this.status = new ReimbursementStatus();
-        //this.submitted = Timestamp.;
-
+        this.author_id = author_id;
+        this.type_id = type_id;
     }
 
     @Override
@@ -110,12 +74,8 @@ public class NewReimbursementRequest {
         return "NewReimbursementRequest{" +
                 "amount='" + amount + '\'' +
                 ", description='" + description + '\'' +
-                ", payment_id='" + payment_id + '\'' +
-                ", author_id='" + author_id + '\'' + //.getId() + '\'' +
-                ", resolver_id='" + resolver + '\'' +
-                ", type='" + type.getId() + '\'' +
-                ", status='" + status.getId() + '\'' +
-                ", submitted='" + submitted + '\'' +
+                ", author_id='" + author_id + '\'' +
+                ", type='" + type_id + '\'' +
                 '}';
     }
 

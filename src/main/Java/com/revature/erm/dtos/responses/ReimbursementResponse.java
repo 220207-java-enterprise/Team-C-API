@@ -12,7 +12,7 @@ public class ReimbursementResponse {
     private String type_id;
 
     public ReimbursementResponse(Reimbursement reimbursement) {
-        this.id = reimbursement.getId();
+        this.id = reimbursement.getReimb_id();
         this.amount = reimbursement.getAmount();
         this.description = reimbursement.getDescription();
         this.author_id = reimbursement.getAuthor_id().getId();

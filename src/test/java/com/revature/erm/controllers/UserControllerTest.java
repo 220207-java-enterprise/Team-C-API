@@ -40,8 +40,8 @@ public class UserControllerTest {
 
         // Arrange
         NewUserRequest request = new NewUserRequest();
-        request.setFirstName("test");
-        request.setLastName("tester");
+        request.setFirstname("test");
+        request.setLastname("tester");
         request.setEmail("test@revature.com");
         request.setUsername("test123");
         request.setPassword("p4$$word");
@@ -65,8 +65,8 @@ public class UserControllerTest {
 
         // Arrange
         NewUserRequest request = new NewUserRequest();
-        request.setFirstName("t0st");
-        request.setLastName("mctest");
+        request.setLastname("t0st");
+        request.setLastname("mctest");
         request.setEmail("test@revature.com");
         request.setUsername("test0123");
         request.setPassword("p4$$word");
