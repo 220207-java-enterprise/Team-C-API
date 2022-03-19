@@ -2,7 +2,10 @@ package com.revature.erm.models;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+<<<<<<< HEAD
 import java.util.Objects;
+=======
+>>>>>>> 8998ae98e653492425169fdff3de01d76b2047d7
 
 @Entity
 @Table (name = "ers_reimbursements")
@@ -26,9 +29,7 @@ public class Reimbursement {
     @Column (name = "payment_id")
     private String payment_id;
 
-    /*private User author;
-    private User resolver = null;*/
-    //TODO @OneToOne or @ManyToOne on com.revature.erm.models.Reimbursement.author_id references an unknown entity
+
     @ManyToOne
     @JoinColumn (name = "author_id", nullable = false)
     private User author_id;
@@ -37,8 +38,6 @@ public class Reimbursement {
     @JoinColumn (name = "resolver_id")
     private User resolver_id;
 
-    //private ReimbursementStatus status;
-    //private ReimbursementType type;
     @OneToOne
     @JoinColumn(name = "status_id", nullable = false)
     private ReimbursementStatus status_id;

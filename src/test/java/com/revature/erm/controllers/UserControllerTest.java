@@ -65,7 +65,8 @@ public class UserControllerTest {
 
         // Arrange
         NewUserRequest request = new NewUserRequest();
-        request.setLastname("t0st");
+
+        request.setFirstname("t0st");
         request.setLastname("mctest");
         request.setEmail("test@revature.com");
         request.setUsername("test0123");
