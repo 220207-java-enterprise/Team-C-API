@@ -87,10 +87,6 @@ public class ReimbursementService {
         updateThisReimbursement.setResolver_id(Extract.get());
         updateThisReimbursement.setResolved(Timestamp.valueOf(LocalDateTime.now()));
 
-        // TODO validate that this update is good to persist
-
-        // TODO map new/updated values from updateThisReimb to the originalReimb
-
         reimbursementRepos.save(updateThisReimbursement);
 
         return updateThisReimbursement;
