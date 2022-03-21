@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 
-@CrossOrigin
+//TO handle talking to VScode
+@CrossOrigin(exposedHeaders = "authorization")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
