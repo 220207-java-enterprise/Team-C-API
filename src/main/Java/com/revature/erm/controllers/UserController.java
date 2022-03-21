@@ -68,8 +68,7 @@ public class UserController {
     @PutMapping(consumes = "application/json", produces = "application/json")
     public Principal updateUser(@RequestBody UpdateUserRequest updateUserRequest, HttpServletRequest req){
         Principal ifAdmin = tokenService.extractRequesterDetails(req.getHeader("Authorization"));
-        //check if time expired on token = null
-        //System.out.println(ifAdmin);
+
         if (ifAdmin == null){
             throw new ResourceNotFoundException("Login token issue: wrong token, not provided, or may have expired.");
         }

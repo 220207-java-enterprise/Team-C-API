@@ -12,13 +12,18 @@ public class ReimbursementResponse {
     private String type_id;
 
     public ReimbursementResponse(Reimbursement reimbursement) {
-        this.id = reimbursement.getId();
+        this.id = reimbursement.getReimb_id();
         this.amount = reimbursement.getAmount();
         this.description = reimbursement.getDescription();
         this.author_id = reimbursement.getAuthor_id().getId();
-        this.resolver_id = reimbursement.getResolver_id().getId();
-        this.status_id = reimbursement.getStatus_id().getId();
-        this.type_id = reimbursement.getType_id().getId();
+        if (this.resolver_id == null){
+            this.resolver_id = "Pending Resolver";
+        }
+        else {
+            this.resolver_id = reimbursement.getResolver_id().getId();
+        }
+        this.status_id = reimbursement.getStatus_id().getStatus();
+        this.type_id = reimbursement.getType_id().getType();
     }
 
     public String getId() {

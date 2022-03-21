@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 
-@CrossOrigin
+//TO handle talking to VScode
+@CrossOrigin(exposedHeaders = "authorization")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -32,11 +33,22 @@ public class AuthController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     public Principal authenticate(@RequestBody LoginRequest loginRequest, HttpServletResponse resp) {
+
+        //Comment out if needed
+        Principal subject = new Principal(userService.login(loginRequest));
+
         //Generates a new token
         String token = tokenService.generateToken(new Principal(userService.login(loginRequest)));
         //Sets the token
         resp.setHeader("Authorization", token);
-        return new Principal(userService.login(loginRequest));
+
+        //Comment out if needed
+        resp.setHeader("Authorization", tokenService.generateToken(subject));
+
+        //return new Principal(userService.login(loginRequest));
+
+        //Comment out if needed
+        return(subject);
     }
 
     // TODO centralize exception handlers using an aspect

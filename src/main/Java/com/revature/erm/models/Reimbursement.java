@@ -1,10 +1,8 @@
 package com.revature.erm.models;
 
 import javax.persistence.*;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.Objects;
 
 @Entity
 @Table (name = "ers_reimbursements")
@@ -28,19 +26,15 @@ public class Reimbursement {
     @Column (name = "payment_id")
     private String payment_id;
 
-    /*private User author;
-    private User resolver = null;*/
-    //TODO @OneToOne or @ManyToOne on com.revature.erm.models.Reimbursement.author_id references an unknown entity
+
     @ManyToOne
     @JoinColumn (name = "author_id", nullable = false)
     private User author_id;
 
     @ManyToOne
-    @JoinColumn (name = "resolver_id", nullable = false)
+    @JoinColumn (name = "resolver_id")
     private User resolver_id;
 
-    //private ReimbursementStatus status;
-    //private ReimbursementType type;
     @OneToOne
     @JoinColumn(name = "status_id", nullable = false)
     private ReimbursementStatus status_id;
@@ -51,18 +45,32 @@ public class Reimbursement {
 
     public Reimbursement() { super(); }
 
-    public Reimbursement(User resolver, Double amount, String description, Timestamp submitted) {
+    public Reimbursement(String reimb_id, Double amount, Timestamp submitted, Timestamp resolved, String description,
+                         String payment_id, User author_id, User resolver_id, ReimbursementStatus status_id,
+                         ReimbursementType type_id) {
+        this.reimb_id = reimb_id;
         this.amount = amount;
         this.submitted = submitted;
+        this.resolved = resolved;
         this.description = description;
-        this.resolver_id = resolver;
+        this.payment_id = payment_id;
+        this.author_id = author_id;
+        this.resolver_id = resolver_id;
+        this.status_id = status_id;
+        this.type_id = type_id;
     }
 
-    public String getId() {
+    public Reimbursement(String reimb_id, User resolver_id, ReimbursementStatus status_id) {
+        this.reimb_id = reimb_id;
+        this.resolver_id = resolver_id;
+        this.status_id = status_id;
+    }
+
+    public String getReimb_id() {
         return reimb_id;
     }
 
-    public void setId(String id) {
+    public void setReimb_id(String reimb_id) {
         this.reimb_id = reimb_id;
     }
 
@@ -106,19 +114,6 @@ public class Reimbursement {
         this.payment_id = payment_id;
     }
 
-    /*public User getAuthor() {
-        return author;
-    }
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-    public User getResolver() {
-        return resolver;
-    }
-    public void setResolver(User resolver) {
-        this.resolver = resolver;
-    }*/
-
     public User getAuthor_id() {
         return author_id;
     }
@@ -134,19 +129,6 @@ public class Reimbursement {
     public void setResolver_id(User resolver_id) {
         this.resolver_id = resolver_id;
     }
-
-    /*public ReimbursementStatus getStatus() {
-        return status;
-    }
-    public void setStatus(ReimbursementStatus status) {
-        this.status = status;
-    }
-    public ReimbursementType getType() {
-        return type;
-    }
-    public void setType(ReimbursementType type) {
-        this.type = type;
-    }*/
 
     public ReimbursementStatus getStatus_id() {
         return status_id;
@@ -164,28 +146,42 @@ public class Reimbursement {
         this.type_id = type_id;
     }
 
-    Reimbursement(String id, Double amount, Timestamp submitted, Timestamp resolved, String description,
-                  String payment_id, User author, User resolver, ReimbursementStatus status, ReimbursementType type) {
-        //this.id = id;
-        this.amount = amount;
-        this.submitted = submitted;
-        //this.resolved = resolved;
-        this.description = description;
-        //this.payment_id = payment_id;
-        this.author_id = author;
-        //this.resolver = resolver;
-        this.status_id = status;
-        this.type_id = type;
-
-    }
-    public Reimbursement(Double amount, String description/*, Timestamp submitted, User author, ReimbursementType type*/) {
-        this.amount = amount;
-        //this.submitted = submitted;
-        this.description = description;
-        //this.author = author;
-        //this.type = type;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Reimbursement that = (Reimbursement) o;
+        return Objects.equals(reimb_id, that.reimb_id)
+                && Objects.equals(amount, that.amount)
+                && Objects.equals(submitted, that.submitted)
+                && Objects.equals(resolved, that.resolved)
+                && Objects.equals(description, that.description)
+                && Objects.equals(payment_id, that.payment_id)
+                && Objects.equals(author_id, that.author_id)
+                && Objects.equals(resolver_id, that.resolver_id)
+                && Objects.equals(status_id, that.status_id)
+                && Objects.equals(type_id, that.type_id);
     }
 
-    public Reimbursement(String reimb_id, ReimbursementStatus status_id){ this.reimb_id = reimb_id; this.status_id = status_id; }
+    @Override
+    public int hashCode() {
+        return Objects.hash(reimb_id, amount, submitted, resolved, description, payment_id, author_id,
+                resolver_id, status_id, type_id);
+    }
 
+    @Override
+    public String toString() {
+        return "Reimbursement{" +
+                "reimb_id='" + reimb_id + '\'' +
+                ", amount=" + amount +
+                ", submitted=" + submitted +
+                ", resolved=" + resolved +
+                ", description='" + description + '\'' +
+                ", payment_id='" + payment_id + '\'' +
+                ", author_id=" + author_id +
+                ", resolver_id=" + resolver_id +
+                ", status_id=" + status_id +
+                ", type_id=" + type_id +
+                '}';
+    }
 }
