@@ -11,6 +11,7 @@ import com.revature.erm.util.exceptions.InvalidRequestException;
 import com.revature.erm.util.exceptions.ResourceConflictException;
 import com.revature.erm.util.exceptions.ResourceNotFoundException;
 import org.postgresql.util.ReaderInputStream;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +27,7 @@ public class ReimbursementService {
 
     private ReimbursementRepos reimbursementRepos;
 
-
+    @Autowired
     public ReimbursementService(ReimbursementRepos reimbursementRepos) {
         this.reimbursementRepos = reimbursementRepos;
     }
