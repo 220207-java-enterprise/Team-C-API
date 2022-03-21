@@ -13,14 +13,16 @@ import java.util.List;
 @Repository
 public interface ReimbursementRepos extends JpaRepository<Reimbursement, String> {
 
-//    @Query("from ers_reimbursements r where r.author_id = ?1")
-//    List<Reimbursement> getReimbursementByAuthor_Id(String author_id);
-//
-//    /*@Query(
-//            value = "SELECT * from reimbursement where material = ?1",
-//            nativeQuery = true
-//    )
-//    List<Reimbursement> findReimbursementByMaterial(String material);*/
+    @Query(value = "SELECT * from ers_reimbursements r where r.author_id = ?1",
+        nativeQuery = true
+    )
+    List<Reimbursement> getReimbursementByAuthor_Id(String author_id);
+
+    /*@Query(
+            value = "SELECT * from reimbursement where material = ?1",
+            nativeQuery = true
+    )
+    List<Reimbursement> findReimbursementByMaterial(String material);*/
 //
 //    // TODO why does this return a list? why not a bool? should this even exist? can we use CrudRepo#save?
 //    // TODO if we decide to use this the query below should be indicated as a native query

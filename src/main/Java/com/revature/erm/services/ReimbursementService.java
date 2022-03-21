@@ -1,24 +1,19 @@
 package com.revature.erm.services;
 
-import com.revature.erm.dtos.requests.ListUserReimbursementsRequest;
 import com.revature.erm.dtos.requests.NewReimbursementRequest;
 import com.revature.erm.dtos.requests.UpdateReimbursementRequest;
 import com.revature.erm.dtos.responses.ReimbursementResponse;
-import com.revature.erm.dtos.responses.ResourceCreationResponse;
 import com.revature.erm.models.*;
 import com.revature.erm.repos.ReimbursementRepos;
-import com.revature.erm.util.exceptions.InvalidRequestException;
-import com.revature.erm.util.exceptions.ResourceConflictException;
+import com.revature.erm.repos.UserRepos;
 import com.revature.erm.util.exceptions.ResourceNotFoundException;
-import org.postgresql.util.ReaderInputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -26,61 +21,81 @@ import java.util.stream.Collectors;
 public class ReimbursementService {
 
     private ReimbursementRepos reimbursementRepos;
+    private UserRepos userRepos;
 
     @Autowired
-    public ReimbursementService(ReimbursementRepos reimbursementRepos) {
+    public ReimbursementService(ReimbursementRepos reimbursementRepos, UserRepos userRepos) {
         this.reimbursementRepos = reimbursementRepos;
+        this.userRepos = userRepos;
     }
 
-    public List<Reimbursement> getReimbursementByStatusId(String statusId) {
-        return null;
+    public List<ReimbursementResponse> getAllReimbursements() {
+
+        //Old way preJava 8
+        /* List<Reimbursement> Reimbursement = reimbursementRepos.findAll();
+        List<ReimbursementResponse> reimbursementResponses = new ArrayList<>();
+        for (Reimbursement reimbursement : Reimbursement) {
+            reimbursementResponses.add(new ReimbursementResponse((Reimbursement)));
+        return reimbursementResponses;*/
+
+        return reimbursementRepos.findAll()
+                .stream()
+                .map(ReimbursementResponse::new)
+                .collect(Collectors.toList());
+
     }
 
-//    public List<Reimbursement> getReimbursementByAuthorId(ListUserReimbursementsRequest lrur) { //String authorId)
-//        User author = lrur.getAuthorId();
-//
-//        List<Reimbursement> reimbursements = reimbursementRepos.getReimbursementByAuthor_Id(author);//new ArrayList<>();
-//
-//        return reimbursements;
-//    }
+
+    public List<ReimbursementResponse> getReimbursementByAuthorId(String lrur) { //String authorId)
+
+        return reimbursementRepos.getReimbursementByAuthor_Id(lrur)
+                .stream()
+                .map(ReimbursementResponse::new)
+                .collect(Collectors.toList());
+    }
 
     public Reimbursement submitNewReimbursement(NewReimbursementRequest newReimbursementRequest) {
+        //necessary to only have to input user by Id
+        Optional<User> Extract = userRepos.findById(newReimbursementRequest.getAuthor_id().getId());
 
         Reimbursement newReimbursement = newReimbursementRequest.extractReimbursement();
-        System.out.println("is new reimbursement null?: " + newReimbursement == null);
-        // TODO encrypt provided password before storing in the database
-
-        newReimbursement.setId(UUID.randomUUID().toString());
-
-//        newReimbursement.setAuthor_id(newReimbursementRequest);
-//        newReimbursement.setResolver_id("5c24b9ca-58ed-41c9-a619-7a19136b21f6");
-
-        newReimbursement.setType_id(new ReimbursementType("3", "Other"));
-        newReimbursement.setStatus_id(new ReimbursementStatus("0", "pending"));
+        newReimbursement.setAuthor_id(Extract.get());
+        newReimbursement.setReimb_id(UUID.randomUUID().toString());
         newReimbursement.setSubmitted(Timestamp.valueOf(LocalDateTime.now()));
-        //newUser.setIsActive(true);
+        newReimbursement.setStatus_id(new ReimbursementStatus("0", "Pending"));
+
         reimbursementRepos.save(newReimbursement);
 
-        return newReimbursement;//newUser;
+        return newReimbursement;
     }
 
 
-//    public boolean changeReimbursementStatus(UpdateReimbursementRequest updateReimbursementRequest) {
-//
-//        Reimbursement updateThisReimbursement = updateReimbursementRequest.extractReimbursement();
-//
-//        // TODO validate that this update is good to persist
-//
-//        Reimbursement originalReimbursement = reimbursementRepos.findById(updateReimbursementRequest.getId()).orElseThrow(ResourceNotFoundException::new);
-//
-//        // TODO map new/updated values from updateThisReimb to the originalReimb
-//
-//        reimbursementRepos.update(updateThisReimbursement);
-//
-//        // TODO fix me
-//        return false;
-//
-//    }
+    public Reimbursement approveOrDenyReimbursementStatus(UpdateReimbursementRequest updateReimbursementRequest) {
+
+        Reimbursement originalReimbursement = reimbursementRepos.findById(updateReimbursementRequest.getReimb_id())
+                .orElseThrow(ResourceNotFoundException::new);
+
+        Optional<User> Extract = userRepos.findById(updateReimbursementRequest.getResolver_id().getId());
+
+        Reimbursement updateThisReimbursement = updateReimbursementRequest.extractReimbursement();
+        updateThisReimbursement.setReimb_id(originalReimbursement.getReimb_id());
+        updateThisReimbursement.setAmount(originalReimbursement.getAmount());
+        updateThisReimbursement.setAuthor_id(originalReimbursement.getAuthor_id());
+        updateThisReimbursement.setSubmitted(originalReimbursement.getSubmitted());
+        updateThisReimbursement.setDescription(originalReimbursement.getDescription());
+        updateThisReimbursement.setType_id(originalReimbursement.getType_id());
+        updateThisReimbursement.setResolver_id(Extract.get());
+        updateThisReimbursement.setResolved(Timestamp.valueOf(LocalDateTime.now()));
+
+        // TODO validate that this update is good to persist
+
+        // TODO map new/updated values from updateThisReimb to the originalReimb
+
+        reimbursementRepos.save(updateThisReimbursement);
+
+        return updateThisReimbursement;
+
+    }
 
     public Boolean approveReimbursement(String reimbId) {
         //Reimbursement newReimbursement = newReimbursementRequest.extractReimbursement();
@@ -108,16 +123,7 @@ public class ReimbursementService {
     // boolean approveReimbursement(String reimbId);
     // boolean denyReimbursement(String reimbId);
 
-    public List<ReimbursementResponse> getAllReimbursements() {
-       /* List<Reimbursement> Reimbursement = reimbursementRepos.findAll();
-        List<ReimbursementResponse> reimbursementResponses = new ArrayList<>();
-        for (Reimbursement reimbursement : Reimbursement) {
-            reimbursementResponses.add(new ReimbursementResponse((Reimbursement)));
 
-        return reimbursementResponses;
-    */    return reimbursementRepos.findAll().stream().map(ReimbursementResponse::new).collect(Collectors.toList());
-
-    }
 }
 
 

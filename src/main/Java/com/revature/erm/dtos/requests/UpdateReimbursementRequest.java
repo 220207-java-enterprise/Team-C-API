@@ -4,19 +4,36 @@ import com.revature.erm.models.Reimbursement;
 import com.revature.erm.models.ReimbursementStatus;
 import com.revature.erm.models.User;
 
-import java.time.LocalDateTime;
-
 public class UpdateReimbursementRequest {
 
-    private String id;
+    private String reimb_id;
+    private User resolver_id;
     private ReimbursementStatus status_id;
 
-    public String getId() {
-        return id;
+    public UpdateReimbursementRequest(){
+        super();
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public UpdateReimbursementRequest(String reimb_id, User resolver_id, ReimbursementStatus status_id) {
+        this.reimb_id = reimb_id;
+        this.resolver_id = resolver_id;
+        this.status_id = status_id;
+    }
+
+    public String getReimb_id() {
+        return reimb_id;
+    }
+
+    public void setReimb_id(String reimb_id) {
+        this.reimb_id = reimb_id;
+    }
+
+    public User getResolver_id() {
+        return resolver_id;
+    }
+
+    public void setResolver_id(User resolver_id) {
+        this.resolver_id = resolver_id;
     }
 
     public ReimbursementStatus getStatus_id() {
@@ -27,6 +44,17 @@ public class UpdateReimbursementRequest {
         this.status_id = status_id;
     }
 
-    public Reimbursement extractReimbursement() { return new Reimbursement(id, status_id); }
+    public Reimbursement extractReimbursement() {
 
+        return new Reimbursement(this.reimb_id, this.resolver_id, this.status_id);
+    }
+
+    @Override
+    public String toString() {
+        return "UpdateReimbursementRequest{" +
+                "reimb_id='" + reimb_id + '\'' +
+                ", resolver_id=" + resolver_id +
+                ", status_id=" + status_id +
+                '}';
+    }
 }
