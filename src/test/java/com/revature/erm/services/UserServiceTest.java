@@ -2,6 +2,7 @@
 package com.revature.erm.services;
 
 import com.revature.erm.dtos.requests.LoginRequest;
+import com.revature.erm.dtos.requests.NewUserRequest;
 import com.revature.erm.models.User;
 import com.revature.erm.repos.UserRepos;
 
@@ -155,6 +156,26 @@ public class UserServiceTest {
         verify(mockUserRepos, times(1)).findUserByUsernameAndPassword(loginRequest.getUsername(), loginRequest.getPassword());
         verify(spiedSut, times(1)).isUsernameValid(loginRequest.getUsername());
         verify(spiedSut, times(1)).isPasswordValid(loginRequest.getPassword());
+
+    }
+    @Test(expected = InvalidRequestException.class)
+    public void test_register_throwsInvalidRequestException_givenInvalidNewUserData() {
+
+        // Arrange
+        UserService spiedSut = Mockito.spy(sut);
+        NewUserRequest stubbedRequest = new NewUserRequest();
+        doReturn(false).when(spiedSut).isUserValid(any());
+
+        // Act
+        try {
+            spiedSut.register(stubbedRequest);
+        } finally {
+            // Assert
+            verify(spiedSut, times(1)).isUserValid(any());
+            verify(spiedSut, times(0)).isUsernameAvailable(anyString());
+            verify(spiedSut, times(0)).isEmailAvailable(anyString());
+            verify(mockUserRepos, times(0)).save(any());
+        }
 
     }
 
