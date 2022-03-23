@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/reimburse")
+@RequestMapping("/reimbursement")
 public class ReimbursementController {
     private final ReimbursementService reimbursementService;
     private final TokenService tokenService;
