@@ -16,7 +16,9 @@ public interface UserRepos extends JpaRepository <User, String> {
 //    @Query("update ers_users u set u.username = ?1, u.email = ?2, u.password = ?3, u.first_name = ?4, " +
 //            "u.last_name = ?5, u.is_active = ?6, u.role_id = ?7 where u.user_id = ?8")
 //    User update(String id);
-
+    @Query(value = "Select id, first_name, last_name, role_id from ers_users e where e.id = ?1",
+            nativeQuery = true)
+    User displayUserByIdFirstNameLastNameRoleName(String id);
 
     User findUserByUsernameAndPassword (String username, String password);
 
