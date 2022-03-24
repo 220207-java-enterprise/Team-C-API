@@ -13,10 +13,12 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.lang.annotation.RetentionPolicy;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -178,5 +180,61 @@ public class UserServiceTest {
         }
 
     }
+    @Test
+    public void isUserValid_givenInvalidUserUserName() {
+        //arrange
+        User invalidUser = new User("Tester", "McTesterson", "employee@email.com", "W!hataBadUsername", "p4$$WORD" );
 
+        //act
+        boolean result = sut.isUserValid(invalidUser);
+
+        //assert
+        Assertions.assertFalse(result);
+    }
+
+    @Test
+    public void isUserValid_givenInvalidUserEmail () {
+        //arrange
+        User invalidUser = new User("Tester", "McTesterson", "employeeemail.com", "Tester99", "p4$$WORD");
+
+        //act
+        boolean result = sut.isUserValid(invalidUser);
+
+        //assert
+        Assertions.assertFalse(result);
+    }
+    @Test
+    public void isUserValid_givenInvalidUserPassword() {
+        //arrange
+        User invalidUser = new User("Tester", "McTesterson", "employee@email.com", "Tester99", "nogoodpassword");
+
+        //act
+        boolean result = sut.isUserValid(invalidUser);
+
+        //assert
+        Assertions.assertFalse(result);
+    }
+    @Test
+    public void test_isUsernameAvailable_givenDuplicateUsername(){
+
+        // Arrange
+        String username = "Tester99";
+        when(mockUserRepos.findUserByUsername(username)).thenReturn(new User());
+
+        // Act
+        boolean result = sut.isUsernameAvailable(username);
+
+        Assertions.assertFalse(result);
+    }
+    @Test
+    public void test_isEmailAvailable_givenDuplicateEmail(){
+        // Arrange
+        String email = "Employee@email.com";
+        when(mockUserRepos.findUserByEmail(email)).thenReturn(new User());
+
+        // Act
+        boolean result = sut.isEmailAvailable(email);
+
+        Assertions.assertFalse(result);
+    }
     }
