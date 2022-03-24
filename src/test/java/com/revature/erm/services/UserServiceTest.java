@@ -9,6 +9,7 @@ import com.revature.erm.repos.UserRepos;
 
 import com.revature.erm.util.exceptions.AuthenticationException;
 import com.revature.erm.util.exceptions.InvalidRequestException;
+import com.revature.erm.util.exceptions.ResourceConflictException;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.Assertions;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.IOException;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Optional;
 
@@ -160,6 +162,7 @@ public class UserServiceTest {
         verify(spiedSut, times(1)).isPasswordValid(loginRequest.getPassword());
 
     }
+
     @Test(expected = InvalidRequestException.class)
     public void test_register_throwsInvalidRequestException_givenInvalidNewUserData() {
 
@@ -180,10 +183,11 @@ public class UserServiceTest {
         }
 
     }
+
     @Test
     public void isUserValid_givenInvalidUserUserName() {
         //arrange
-        User invalidUser = new User("Tester", "McTesterson", "employee@email.com", "W!hataBadUsername", "p4$$WORD" );
+        User invalidUser = new User("Tester", "McTesterson", "employee@email.com", "W!hataBadUsername", "p4$$WORD");
 
         //act
         boolean result = sut.isUserValid(invalidUser);
@@ -193,7 +197,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void isUserValid_givenInvalidUserEmail () {
+    public void isUserValid_givenInvalidUserEmail() {
         //arrange
         User invalidUser = new User("Tester", "McTesterson", "employeeemail.com", "Tester99", "p4$$WORD");
 
@@ -203,6 +207,7 @@ public class UserServiceTest {
         //assert
         Assertions.assertFalse(result);
     }
+
     @Test
     public void isUserValid_givenInvalidUserPassword() {
         //arrange
@@ -214,8 +219,9 @@ public class UserServiceTest {
         //assert
         Assertions.assertFalse(result);
     }
+
     @Test
-    public void test_isUsernameAvailable_givenDuplicateUsername(){
+    public void test_isUsernameAvailable_givenDuplicateUsername() {
 
         // Arrange
         String username = "Tester99";
@@ -226,8 +232,9 @@ public class UserServiceTest {
 
         Assertions.assertFalse(result);
     }
+
     @Test
-    public void test_isEmailAvailable_givenDuplicateEmail(){
+    public void test_isEmailAvailable_givenDuplicateEmail() {
         // Arrange
         String email = "Employee@email.com";
         when(mockUserRepos.findUserByEmail(email)).thenReturn(new User());
@@ -237,4 +244,31 @@ public class UserServiceTest {
 
         Assertions.assertFalse(result);
     }
+
+    @Test
+    public void test_registration_throwsResourceConflictException_givenDuplicateUsernameAndEmail() throws ResourceConflictException, IOException {
+
+        UserService spiedSut = Mockito.spy(sut);
+        NewUserRequest duplicateUserRequest = new NewUserRequest("Tester", "McTesterson", "employee@email.com", "Tester99", "p4$$WORD");
+
+        User duplicateUserToSave = duplicateUserRequest.extractUser();
+
+        String username = duplicateUserToSave.getUsername();
+        String email = duplicateUserToSave.getEmail();
+
+        when(mockUserRepos.findUserByUsername(username)).thenReturn(new User());
+        when(mockUserRepos.findUserByEmail(email)).thenReturn(new User());
+
+        try {
+            Exception exception = assertThrows(ResourceConflictException.class, () -> {
+                spiedSut.register(duplicateUserRequest);
+            });
+
+            String exceptionMessage = exception.getMessage();
+            Assertions.assertNotNull(exceptionMessage);
+        } finally {
+            verify(mockUserRepos, times(0)).save(duplicateUserToSave);
+        }
     }
+}
+
