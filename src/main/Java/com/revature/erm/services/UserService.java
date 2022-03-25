@@ -46,6 +46,7 @@ public class UserService {
     public User register(NewUserRequest newUserRequest) {
 
         User newUser = newUserRequest.extractUser();
+        newUser.setActive(false);
         if (!isUserValid(newUser)) {
             throw new InvalidRequestException("Bad registration details given.");
         }

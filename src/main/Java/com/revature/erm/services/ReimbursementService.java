@@ -87,17 +87,13 @@ public class ReimbursementService {
         updateThisReimbursement.setResolver_id(Extract.get());
         updateThisReimbursement.setResolved(Timestamp.valueOf(LocalDateTime.now()));
 
-        // TODO validate that this update is good to persist
-
-        // TODO map new/updated values from updateThisReimb to the originalReimb
-
         reimbursementRepos.save(updateThisReimbursement);
 
         return updateThisReimbursement;
 
     }
 
-    public Boolean approveReimbursement(String reimbId) {
+    public boolean approveReimbursement(String reimbId) {
         //Reimbursement newReimbursement = newReimbursementRequest.extractReimbursement();
         try {
             if (reimbId == "1")
@@ -110,7 +106,7 @@ public class ReimbursementService {
             e.printStackTrace();
             System.out.println("invalid user input");
         }
-        return null;
+        return true;
     }
 
     public boolean denyReimbursement(String reimbId) {
