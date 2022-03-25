@@ -14,7 +14,7 @@ import java.util.Properties;
 public class JwtConfig {
 
     private Properties property = new Properties();
-    private int expiration = 60 * 60 * 1000; // number of milliseconds in an hour
+    private int expiration = 60 * 60 * 1000 * 24; // number of milliseconds in an hour
     private final SignatureAlgorithm sigAlg = SignatureAlgorithm.HS256;
     private final Key signingKey;
 
