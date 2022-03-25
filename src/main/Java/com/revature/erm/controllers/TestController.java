@@ -1,4 +1,4 @@
-package com.revature.boot.controllers;
+package com.revature.erm.controllers;
 
 import com.revature.erm.dtos.responses.ResourceCreationResponse;
 import com.revature.erm.models.User;
