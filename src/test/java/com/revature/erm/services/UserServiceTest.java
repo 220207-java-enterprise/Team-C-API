@@ -3,6 +3,7 @@ package com.revature.erm.services;
 
 import com.revature.erm.dtos.requests.LoginRequest;
 import com.revature.erm.dtos.requests.NewUserRequest;
+import com.revature.erm.dtos.requests.UpdateUserRequest;
 import com.revature.erm.models.User;
 import com.revature.erm.repos.UserRepos;
 
@@ -34,6 +35,7 @@ public class UserServiceTest {
     private UserService sut;
     private UserRepos mockUserRepos = mock(UserRepos.class);
 
+
     @Before
     public void setup() {
         sut = new UserService(mockUserRepos);
@@ -52,6 +54,7 @@ public class UserServiceTest {
         Assert.assertFalse(result);
     }
 
+
     @Test
     public void test_isUserNameValid_returnsFalse_givenNullString() {
         String username = null;
@@ -59,26 +62,31 @@ public class UserServiceTest {
         Assert.assertFalse(result);
     }
 
+
     @Test
     public void test_isUsernameValid_returnsFalse_givenShortUsername() {
         Assert.assertFalse(sut.isUsernameValid("short"));
 
     }
 
+
     @Test
     public void test_isUsernameValid_returnsFalse_givenLongUsername() {
         Assert.assertFalse(sut.isUsernameValid("undernocircumstanceshouldausernamebethislong"));
     }
+
 
     @Test
     public void test_isUsernameValid_returnsFalse_givenUsernameWithIllegalCharacters() {
         Assert.assertFalse(sut.isUsernameValid("ILOVEQC!!"));
     }
 
+
     @Test
     public void test_isUsernameValid_returnsTrue_givenValidUsername() {
         Assert.assertTrue(sut.isUsernameValid("tester99"));
     }
+
 
     @Test(expected = InvalidRequestException.class)
     public void test_login_throwsInvalidRequestExceptionAndDoesNotInvokeUserDao_givenInvalidUsername() {
@@ -95,6 +103,7 @@ public class UserServiceTest {
 
     }
 
+
     @Test(expected = InvalidRequestException.class)
     public void test_login_throwsInvalidRequestExceptionAndDoesNotInvokeUserDao_givenInvalidPassword() {
 
@@ -108,6 +117,7 @@ public class UserServiceTest {
             verify(mockUserRepos, times(0)).findUserByUsernameAndPassword(loginRequest.getUsername(), loginRequest.getPassword());
         }
     }
+
 
     @Test(expected = InvalidRequestException.class)
     public void test_login_throwsInvalidRequestExceptionAndDoesNotInvokeUserDao_givenInvalidUsernameAndPassword() {
@@ -123,13 +133,14 @@ public class UserServiceTest {
         }
     }
 
+
     @Test(expected = AuthenticationException.class)
     public void test_login_throwsAuthenticationException_givenUnknownUserCredentials() {
 
         // Arrange
         UserService spiedSut = Mockito.spy(sut);
 
-        LoginRequest loginRequest = new LoginRequest("Notinyourdatabase", "p4$$W0RD");
+        LoginRequest loginRequest = new LoginRequest("Notinyourdatabase", "p4$$W0RDD");
 
         when(spiedSut.isUsernameValid(loginRequest.getUsername())).thenReturn(true);
         when(spiedSut.isPasswordValid(loginRequest.getPassword())).thenReturn(true);
@@ -139,6 +150,7 @@ public class UserServiceTest {
         sut.login(loginRequest);
 
     }
+
 
     @Test
     public void test_login_returnsNonNullAppUser_givenValidAndKnownCredentials() {
@@ -163,6 +175,7 @@ public class UserServiceTest {
 
     }
 
+
     @Test(expected = InvalidRequestException.class)
     public void test_register_throwsInvalidRequestException_givenInvalidNewUserData() {
 
@@ -184,6 +197,7 @@ public class UserServiceTest {
 
     }
 
+
     @Test
     public void isUserValid_givenInvalidUserUserName() {
         //arrange
@@ -195,6 +209,7 @@ public class UserServiceTest {
         //assert
         Assertions.assertFalse(result);
     }
+
 
     @Test
     public void isUserValid_givenInvalidUserEmail() {
@@ -208,6 +223,7 @@ public class UserServiceTest {
         Assertions.assertFalse(result);
     }
 
+
     @Test
     public void isUserValid_givenInvalidUserPassword() {
         //arrange
@@ -220,55 +236,42 @@ public class UserServiceTest {
         Assertions.assertFalse(result);
     }
 
-    @Test
-    public void test_isUsernameAvailable_givenDuplicateUsername() {
-
-        // Arrange
-        String username = "Tester99";
-        when(mockUserRepos.findUserByUsername(username)).thenReturn(new User());
-
-        // Act
-        boolean result = sut.isUsernameAvailable(username);
-
-        Assertions.assertFalse(result);
-    }
-
-    @Test
-    public void test_isEmailAvailable_givenDuplicateEmail() {
-        // Arrange
-        String email = "Employee@email.com";
-        when(mockUserRepos.findUserByEmail(email)).thenReturn(new User());
-
-        // Act
-        boolean result = sut.isEmailAvailable(email);
-
-        Assertions.assertFalse(result);
-    }
 
     @Test
     public void test_registration_throwsResourceConflictException_givenDuplicateUsernameAndEmail() throws ResourceConflictException, IOException {
 
         UserService spiedSut = Mockito.spy(sut);
-        NewUserRequest duplicateUserRequest = new NewUserRequest("Tester", "McTesterson", "employee@email.com", "Tester99", "p4$$WORD");
+        NewUserRequest repeatedUserRequest = new NewUserRequest("Tester", "McTesterson", "employee@email.com", "Tester99", "p4$$WORD");
 
-        User duplicateUserToSave = duplicateUserRequest.extractUser();
+        User repeatedUserToSave = repeatedUserRequest.extractUser();
 
-        String username = duplicateUserToSave.getUsername();
-        String email = duplicateUserToSave.getEmail();
+        String username = repeatedUserToSave.getUsername();
+        String email = repeatedUserToSave.getEmail();
+
 
         when(mockUserRepos.findUserByUsername(username)).thenReturn(new User());
         when(mockUserRepos.findUserByEmail(email)).thenReturn(new User());
 
         try {
             Exception exception = assertThrows(ResourceConflictException.class, () -> {
-                spiedSut.register(duplicateUserRequest);
+                spiedSut.register(repeatedUserRequest);
             });
 
             String exceptionMessage = exception.getMessage();
             Assertions.assertNotNull(exceptionMessage);
         } finally {
-            verify(mockUserRepos, times(0)).save(duplicateUserToSave);
+            verify(mockUserRepos, times(0)).save(repeatedUserToSave);
         }
+
+
     }
 }
+
+   /* public User updateUser(UpdateUserRequest updateRequest) {
+        User updatedUser = updateRequest.extractUser();
+        userRepo.save(updatedUser);
+        return updatedUser;
+        */
+
+
 
