@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin
+@CrossOrigin(exposedHeaders = "authorization")
 @RestController
 @RequestMapping("/user")
 public class UserController {

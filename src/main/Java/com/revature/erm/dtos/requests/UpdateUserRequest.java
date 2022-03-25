@@ -18,14 +18,14 @@ public class UpdateUserRequest {
         super();
     }
 
-    public UpdateUserRequest(String userId, String userName, String email, String userPassword, String givenName,
-                             String surname, Boolean isActive, UserRole roleId) {
+    public UpdateUserRequest(String userId, String userName, String email, String password, String firstName,
+                             String lastName, Boolean isActive, UserRole roleId) {
         this.userId = userId;
         this.userName = userName;
         this.email = email;
-        this.password = userPassword;
-        this.firstName = givenName;
-        this.lastName = surname;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.isActive = isActive;
         this.roleId = roleId;
     }
