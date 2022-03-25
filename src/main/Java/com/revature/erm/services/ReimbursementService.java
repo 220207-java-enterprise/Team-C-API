@@ -106,7 +106,7 @@ public class ReimbursementService {
             e.printStackTrace();
             System.out.println("invalid user input");
         }
-        return null;
+        return true;
     }
 
     public boolean denyReimbursement(String reimbId) {
