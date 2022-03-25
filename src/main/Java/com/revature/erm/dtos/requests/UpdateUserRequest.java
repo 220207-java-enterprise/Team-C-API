@@ -11,7 +11,7 @@ public class UpdateUserRequest {
     private String password;
     private String firstName;
     private String lastName;
-    private Boolean isActive;
+    private boolean isActive;
     private UserRole roleId;
 
     public UpdateUserRequest() {
@@ -19,7 +19,7 @@ public class UpdateUserRequest {
     }
 
     public UpdateUserRequest(String userId, String userName, String email, String password, String firstName,
-                             String lastName, Boolean isActive, UserRole roleId) {
+                             String lastName, boolean isActive, UserRole roleId) {
         this.userId = userId;
         this.userName = userName;
         this.email = email;
@@ -78,11 +78,11 @@ public class UpdateUserRequest {
         this.lastName = lastName;
     }
 
-    public Boolean getActive() {
+    public boolean getActive() {
         return isActive;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         isActive = active;
     }
 

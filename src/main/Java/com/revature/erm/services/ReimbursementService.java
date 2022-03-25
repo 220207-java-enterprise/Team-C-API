@@ -93,7 +93,7 @@ public class ReimbursementService {
 
     }
 
-    public Boolean approveReimbursement(String reimbId) {
+    public boolean approveReimbursement(String reimbId) {
         //Reimbursement newReimbursement = newReimbursementRequest.extractReimbursement();
         try {
             if (reimbId == "1")
