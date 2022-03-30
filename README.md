@@ -44,7 +44,7 @@ To-do List: <br />
 * Finance Manager can view all pending reimbursement requests<br />
 * Finance manager can view history of reimbursement requests approved or denied<br />
 * Authenticated user can view their reimbursement history<br />
-* Sending payment request to prism 
+* Sending payment request to prism <br />
 * Admin user can deactivate accounts
 
 # Getting Started
