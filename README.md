@@ -35,7 +35,7 @@ spring boot
 * New users can register in UI New Users page<br />
 * New users will be saved in the database in a DBeaver table<br />
 * Existing users can login through the Login page<br />
-* Reimbursements requests can be made on the Reimbursement page<br /> <br />
+* Reimbursements requests can be made on the Reimbursement page<br /> 
 * Authenticated users can see reimbursements on reimbursement page<br />
 
 To-do List: <br />
