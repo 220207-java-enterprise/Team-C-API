@@ -44,7 +44,7 @@ To-do List: <br />
 * Finance Manager can view all pending reimbursement requests<br />
 * Finance manager can view history of reimbursement requests approved or denied<br />
 * Authenticated user can view their reimbursement history<br />
-* Sending payment request to prism
+* Sending payment request to prism 
 * Admin user can deactivate accounts
 
 # Getting Started
@@ -55,13 +55,14 @@ To-do List: <br />
 
 # Usage
 
-1. In the terminal of Visual Studio Code, start up the application with: npm start.
-2. Login in as a new user on the New User page.
+1. In the local terminal in intellij run: mvn tomcat7:deploy
+2. In the terminal of Visual Studio Code, start up the application with: npm start
+3. Login in as a new user on the New User page, log in as an authenticated user on the Login page, or go to the Create Reimbursement page to create a new reimbursement.
 
 
 # Contributors
 
-William, Khari Thompson, Andrew Saenz, Cameron, Aiza Weber
+William Johnson, Khari Thompson, Andrew Saenz, Cameron Lintz, Aiza Weber
 
 
 # License
