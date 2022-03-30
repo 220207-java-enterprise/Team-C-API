@@ -52,10 +52,15 @@ To-do List: <br />
 1. Set up Java 8, Apache Maven 3, Postman, Gitbash, Intellij, Docker, DBeaver, Visual Studio Code, Node.js, and React.
 2. Run in gitbash command line: git clone https://github.com/220207-java-enterprise/Team-C-API.git
 3. Run in gitbash command line: git clone https://github.com/220207-java-enterprise/Team-C-UI.git
+4. After opening Team-C-UI within Visual Studio Code, run this command in the terminal: cd Team-C-API/p2_foundation
+5. Follow through with these commands for react axios and dom:<br />
+    npm i axios<br />
+    npm i react-router-dom<br />
+    npm i @types/react-router-dom<br />
 
 # Usage
 
-1. In the local terminal in intellij run: mvn tomcat7:deploy
+1. Open Team-C-API within intellij.
 2. In the terminal of Visual Studio Code, start up the application with: npm start
 3. Login in as a new user on the New User page, log in as an authenticated user on the Login page, or go to the Create Reimbursement page to create a new reimbursement.
 
